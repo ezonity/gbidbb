@@ -35,6 +35,7 @@
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 md:p-6">
 
+    <!-- Pinalawak ang form sa pamamagitan ng pagbabago ng max-w-4xl sa max-w-6xl -->
     <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl max-w-6xl w-full border border-slate-200">
         <div class="relative text-center mb-8">
             <div class="absolute left-0 top-0 flex items-center gap-3 h-full">
@@ -46,27 +47,29 @@
         
         <!-- Login Section -->
         <div id="login-section" class=" p-8 border-2 border-dashed rounded-lg">
-            <h3 class="text-xl font-semibold text-slate-700 mb-4">Sign In</h3>
+            <h3 class="text-xl font-semibold text-slate-700 mb-4 text-center">Sign In</h3>
              <div id="auth-status" class="text-center mb-4 p-2 rounded-lg text-sm font-medium hidden"></div>
-            <div class="space-y-4">
+            <div class="space-y-4 max-w-sm mx-auto">
                  <div>
                     <label for="email" class="block text-sm font-medium text-slate-700 text-left">Email</label>
                     <input type="email" id="email" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
                 </div>
                 <div>
-                    <label for="password" class="block text-sm font-medium text-slate-700 text-left">Password</label>
+                    <label for="password" class="block text-sm font-medium text-slate-700 text-left">Password (min. 6 characters)</label>
                     <input type="password" id="password" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
                 </div>
                 <div class="pt-2">
+                    <!-- Tinanggal ang "Create Account" button at iniwan lang ang "Sign In" -->
                     <button id="signin-btn" class="w-full flex justify-center items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700">Sign In</button>
                 </div>
+                 <!-- Tinanggal ang "Sign in with Google" button at ang divider -->
             </div>
         </div>
 
         <!-- Main App Content (Initially Hidden) -->
         <div id="app-content" class="hidden">
              <div id="connection-status" class="flex justify-between items-center mb-4 p-2 rounded-lg text-sm font-medium">
-                <span><!-- Status will be updated by script --></span>
+                <span id="user-info"><!-- Status will be updated by script --></span>
                 <button id="signout-btn" class="py-1 px-3 border border-transparent rounded-lg text-sm font-medium text-teal-700 bg-teal-200 hover:bg-teal-300 transition-colors">Sign Out</button>
             </div>
             <!-- CSV Upload Section -->
@@ -390,13 +393,12 @@
         let filteredSchedulesCache = []; // Cache for filtered data
 
         // --- DOM ELEMENTS ---
-        let loginSection, appContent, googleSigninBtn, connectionStatus, loginText, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDate, filterSchedule, filterZone, filterSite, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, createAccountBtn, authStatus, signoutBtn;
+        let loginSection, appContent, connectionStatus, loginText, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDate, filterSchedule, filterZone, filterSite, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, authStatus, signoutBtn, userInfo;
         let isScrolling = false;
 
         function initializeDOMElements() {
             loginSection = document.getElementById('login-section');
             appContent = document.getElementById('app-content');
-            googleSigninBtn = document.getElementById('google-signin-btn');
             connectionStatus = document.getElementById('connection-status');
             signoutBtn = document.getElementById('signout-btn');
             loginText = document.getElementById('login-text');
@@ -424,8 +426,8 @@
             emailInput = document.getElementById('email');
             passwordInput = document.getElementById('password');
             signinBtn = document.getElementById('signin-btn');
-            createAccountBtn = document.getElementById('create-account-btn');
             authStatus = document.getElementById('auth-status');
+            userInfo = document.getElementById('user-info');
         }
 
         // --- MAIN INITIALIZATION FUNCTION ---
@@ -442,42 +444,8 @@
                     // Show login UI if not signed in
                     loginSection.classList.remove('hidden');
                     appContent.classList.add('hidden');
-                    currentUserId = null;
-
-                    // Reset app state and UI
-                    schedulesFromDB = [];
-                    csvDataToSave = [];
-                    selectedToDelete.clear();
-                    
-                    document.getElementById('output-table-body').innerHTML = '<tr><td colspan="9" class="text-center p-8 text-slate-500">Please sign in to view schedules.</td></tr>';
-                    if (saveCsvDataBtn) saveCsvDataBtn.classList.add('hidden');
-                    if (deleteSelectedBtn) deleteSelectedBtn.classList.add('hidden');
-                    if (tableTitle) tableTitle.textContent = "Schedules from Database";
-                    
-                    const form = document.getElementById('schedule-form');
-                    if (form) form.reset();
-                    
-                    const csvInput = document.getElementById('csv-file-input');
-                    if (csvInput) csvInput.value = '';
-                    
-                    if (clearFilterBtn) clearFilterBtn.click();
                 }
             });
-
-            // This button is now removed from HTML, but we keep the logic in case it's added back
-            if (googleSigninBtn) {
-                googleSigninBtn.addEventListener('click', async () => {
-                    const provider = new GoogleAuthProvider();
-                    showAuthStatus('Opening Google sign-in...', 'info');
-                    try {
-                        await signInWithPopup(auth, provider);
-                    } catch (error) {
-                        console.error("Google Sign-In Failed:", error);
-                        showAuthStatus(`Sign-in failed: ${error.message}`, "error");
-                    }
-                });
-            }
-
 
             signinBtn.addEventListener('click', async () => {
                 showAuthStatus('Signing in...', 'info');
@@ -488,25 +456,13 @@
                 }
             });
 
-            // This button is now removed from HTML
-            if(createAccountBtn) {
-                createAccountBtn.addEventListener('click', async () => {
-                    showAuthStatus('Creating account...', 'info');
-                    try {
-                        await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-                        showAuthStatus('Account created successfully! Please sign in.', 'success');
-                    } catch (error) {
-                        showAuthStatus(error.message, 'error');
-                    }
-                });
-            }
-
-
-            signoutBtn.addEventListener('click', () => {
-                signOut(auth).catch((error) => {
-                    console.error("Sign Out Error", error);
-                    showStatusMessage("Failed to sign out.", "error");
-                });
+            signoutBtn.addEventListener('click', async () => {
+                try {
+                    await signOut(auth);
+                    // onAuthStateChanged will handle hiding the app and showing the login screen
+                } catch (error) {
+                    console.error("Sign Out Failed:", error);
+                }
             });
         }
 
@@ -517,7 +473,7 @@
             // Hide login UI and show the main app
             loginSection.classList.add('hidden');
             appContent.classList.remove('hidden');
-            connectionStatus.querySelector('span').textContent = `Signed in as ${user.displayName || user.email}`;
+            userInfo.textContent = `Signed in as ${user.displayName || user.email}`;
             connectionStatus.className = "flex justify-between items-center mb-4 p-2 rounded-lg text-sm font-medium bg-teal-100 text-teal-800";
 
 
@@ -690,28 +646,47 @@
                     showStatusMessage('No data found in the CSV file.', 'error', true);
                     return;
                 }
-                csvDataToSave = []; // Clear previous preview
+                
+                const mainRecords = [];
+                const overrideRecords = [];
                 const dataRows = lines.slice(1);
+                
                 dataRows.forEach(line => {
                     const columns = parseCsvLine(line);
                     if (columns.length < 10) return;
                     const recordType = columns[0].toLowerCase();
-                    const employeeInfo = { owfId: columns[1], employeeName: columns[2], agencyName: columns[3], zone: columns[4], site: columns[5] };
                     if (recordType === 'main') {
-                        const scheduleData = { transactionDateFrom: columns[6], transactionDateTo: columns[7], workSchedule: columns[8], restDay: columns[9] };
-                        const schedules = generateSchedules(employeeInfo, scheduleData, {});
-                        csvDataToSave.push(...schedules);
+                        mainRecords.push(columns);
                     } else if (recordType === 'override') {
-                         const overrideDate = columns[6];
-                         const overrideSchedule = columns[8];
-                         if (!employeeInfo.owfId || !overrideDate) return;
-                         const scheduleToDisplay = convertToMilitaryTime(overrideSchedule);
-                         const totalHours = calculateWorkHours(scheduleToDisplay);
-                         const scheduleEntry = { ...employeeInfo, date: overrideDate, schedule: scheduleToDisplay, totalHours };
-                         csvDataToSave.push(scheduleEntry);
+                        overrideRecords.push(columns);
                     }
                 });
-                currentPage = 1;
+
+                csvDataToSave = []; // Clear previous preview
+                
+                mainRecords.forEach(columns => {
+                    const employeeInfo = { owfId: columns[1], employeeName: columns[2], agencyName: columns[3], zone: columns[4], site: columns[5] };
+                    const scheduleData = { transactionDateFrom: columns[6], transactionDateTo: columns[7], workSchedule: columns[8], restDay: columns[9] };
+                    const schedules = generateSchedules(employeeInfo, scheduleData, {});
+                    csvDataToSave.push(...schedules);
+                });
+
+                overrideRecords.forEach(columns => {
+                    const employeeInfo = { owfId: columns[1], employeeName: columns[2], agencyName: columns[3], zone: columns[4], site: columns[5] };
+                    const overrideDate = columns[6];
+                    const overrideSchedule = columns[8];
+                    
+                    const indexToOverride = csvDataToSave.findIndex(s => s.owfId === employeeInfo.owfId && s.date === overrideDate);
+
+                    if (indexToOverride !== -1) {
+                        const scheduleToDisplay = convertToMilitaryTime(overrideSchedule);
+                        const totalHours = calculateWorkHours(scheduleToDisplay);
+                        csvDataToSave[indexToOverride].schedule = scheduleToDisplay;
+                        csvDataToSave[indexToOverride].totalHours = totalHours;
+                    }
+                });
+
+
                 applyFiltersAndRender();
                 tableTitle.textContent = `CSV Preview (${csvDataToSave.length} rows)`;
                 saveCsvDataBtn.classList.remove('hidden');
@@ -947,8 +922,9 @@
                     return;
                 }
                 
-                // Use a custom modal/dialog instead of window.confirm
-                const confirmation = true; // Replace with a proper modal later
+                // NOTE: Using a custom modal for confirmation is better than window.confirm
+                // but for simplicity, we'll keep it. In a real app, replace this.
+                const confirmation = confirm(`Are you sure you want to delete ${selectedToDelete.size} records? This cannot be undone.`);
                 if (!confirmation) {
                     showStatusMessage('Delete operation cancelled.', 'info');
                     return;
