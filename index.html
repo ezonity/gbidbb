@@ -35,7 +35,7 @@
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 md:p-6">
 
-    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl max-w-4xl w-full border border-slate-200">
+    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl max-w-6xl w-full border border-slate-200">
         <div class="relative text-center mb-8">
             <div class="absolute left-0 top-0 flex items-center gap-3 h-full">
                 <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjRkRCMDEzIi8+PHRleHQgeD0iNTAiIHk9IjY1IiBmb250LWZhbWlseT0iY3Vyc2l2ZSwgc2VyaWYiIGZvbnQtc2l6ZT0iNjAiIGZvbnQtd2VpZ2h0PSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSI+RzwvdGV4dD48L3N2Zz4=" alt="GBI Logo" class="h-10 w-10 object-contain">
@@ -46,7 +46,7 @@
         
         <!-- Login Section -->
         <div id="login-section" class=" p-8 border-2 border-dashed rounded-lg">
-            <h3 class="text-xl font-semibold text-slate-700 mb-4">Sign In or Create Account</h3>
+            <h3 class="text-xl font-semibold text-slate-700 mb-4">Sign In</h3>
              <div id="auth-status" class="text-center mb-4 p-2 rounded-lg text-sm font-medium hidden"></div>
             <div class="space-y-4">
                  <div>
@@ -54,32 +54,20 @@
                     <input type="email" id="email" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
                 </div>
                 <div>
-                    <label for="password" class="block text-sm font-medium text-slate-700 text-left">Password (min. 6 characters)</label>
+                    <label for="password" class="block text-sm font-medium text-slate-700 text-left">Password</label>
                     <input type="password" id="password" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
                 </div>
-                <div class="flex gap-4">
+                <div class="pt-2">
                     <button id="signin-btn" class="w-full flex justify-center items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700">Sign In</button>
-                    <button id="create-account-btn" class="w-full flex justify-center items-center gap-2 py-2 px-4 border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50">Create Account</button>
                 </div>
-                 <div class="relative my-4">
-                  <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                    <div class="w-full border-t border-gray-300"></div>
-                  </div>
-                  <div class="relative flex justify-center">
-                    <span class="bg-white px-2 text-sm text-gray-500">Or continue with</span>
-                  </div>
-                </div>
-                <button id="google-signin-btn" class="w-full inline-flex items-center justify-center gap-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold py-2 px-6 rounded-lg transition-colors">
-                    <svg class="w-5 h-5" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 126 23.4 172.9 62.3l-66.5 64.6C305.5 114.6 279.8 100 248 100c-73 0-132.3 59.2-132.3 132S175 364 248 364c42.4 0 79.4-20.4 104.2-51.6H248v-85.3h236.1c2.3 12.7 3.9 26.9 3.9 41.4z"></path></svg>
-                    Sign in with Google
-                </button>
             </div>
         </div>
 
         <!-- Main App Content (Initially Hidden) -->
         <div id="app-content" class="hidden">
-             <div id="connection-status" class="text-center mb-4 p-2 rounded-lg text-sm font-medium">
-                <!-- Status will be updated by script -->
+             <div id="connection-status" class="flex justify-between items-center mb-4 p-2 rounded-lg text-sm font-medium">
+                <span><!-- Status will be updated by script --></span>
+                <button id="signout-btn" class="py-1 px-3 border border-transparent rounded-lg text-sm font-medium text-teal-700 bg-teal-200 hover:bg-teal-300 transition-colors">Sign Out</button>
             </div>
             <!-- CSV Upload Section -->
             <div class="form-section bg-slate-50/50">
@@ -378,7 +366,7 @@
     <script type="module">
         // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, collection, onSnapshot, query, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- FIREBASE SETUP ---
@@ -399,9 +387,10 @@
         let currentPage = 1;
         let itemsPerPage = 100;
         let selectedToDelete = new Set();
+        let filteredSchedulesCache = []; // Cache for filtered data
 
         // --- DOM ELEMENTS ---
-        let loginSection, appContent, googleSigninBtn, connectionStatus, loginText, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDate, filterSchedule, filterZone, filterSite, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, createAccountBtn, authStatus;
+        let loginSection, appContent, googleSigninBtn, connectionStatus, loginText, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDate, filterSchedule, filterZone, filterSite, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, createAccountBtn, authStatus, signoutBtn;
         let isScrolling = false;
 
         function initializeDOMElements() {
@@ -409,6 +398,7 @@
             appContent = document.getElementById('app-content');
             googleSigninBtn = document.getElementById('google-signin-btn');
             connectionStatus = document.getElementById('connection-status');
+            signoutBtn = document.getElementById('signout-btn');
             loginText = document.getElementById('login-text');
             uploadCsvBtn = document.getElementById('upload-csv-btn');
             submitBtn = document.getElementById('submit-btn');
@@ -452,20 +442,42 @@
                     // Show login UI if not signed in
                     loginSection.classList.remove('hidden');
                     appContent.classList.add('hidden');
+                    currentUserId = null;
+
+                    // Reset app state and UI
+                    schedulesFromDB = [];
+                    csvDataToSave = [];
+                    selectedToDelete.clear();
+                    
+                    document.getElementById('output-table-body').innerHTML = '<tr><td colspan="9" class="text-center p-8 text-slate-500">Please sign in to view schedules.</td></tr>';
+                    if (saveCsvDataBtn) saveCsvDataBtn.classList.add('hidden');
+                    if (deleteSelectedBtn) deleteSelectedBtn.classList.add('hidden');
+                    if (tableTitle) tableTitle.textContent = "Schedules from Database";
+                    
+                    const form = document.getElementById('schedule-form');
+                    if (form) form.reset();
+                    
+                    const csvInput = document.getElementById('csv-file-input');
+                    if (csvInput) csvInput.value = '';
+                    
+                    if (clearFilterBtn) clearFilterBtn.click();
                 }
             });
 
-            googleSigninBtn.addEventListener('click', async () => {
-                const provider = new GoogleAuthProvider();
-                showAuthStatus('Opening Google sign-in...', 'info');
-                try {
-                    await signInWithPopup(auth, provider);
-                    // onAuthStateChanged will handle the rest
-                } catch (error) {
-                    console.error("Google Sign-In Failed:", error);
-                    showAuthStatus(`Sign-in failed: ${error.message}`, "error");
-                }
-            });
+            // This button is now removed from HTML, but we keep the logic in case it's added back
+            if (googleSigninBtn) {
+                googleSigninBtn.addEventListener('click', async () => {
+                    const provider = new GoogleAuthProvider();
+                    showAuthStatus('Opening Google sign-in...', 'info');
+                    try {
+                        await signInWithPopup(auth, provider);
+                    } catch (error) {
+                        console.error("Google Sign-In Failed:", error);
+                        showAuthStatus(`Sign-in failed: ${error.message}`, "error");
+                    }
+                });
+            }
+
 
             signinBtn.addEventListener('click', async () => {
                 showAuthStatus('Signing in...', 'info');
@@ -476,14 +488,25 @@
                 }
             });
 
-            createAccountBtn.addEventListener('click', async () => {
-                showAuthStatus('Creating account...', 'info');
-                try {
-                    await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-                    showAuthStatus('Account created successfully! Please sign in.', 'success');
-                } catch (error) {
-                    showAuthStatus(error.message, 'error');
-                }
+            // This button is now removed from HTML
+            if(createAccountBtn) {
+                createAccountBtn.addEventListener('click', async () => {
+                    showAuthStatus('Creating account...', 'info');
+                    try {
+                        await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+                        showAuthStatus('Account created successfully! Please sign in.', 'success');
+                    } catch (error) {
+                        showAuthStatus(error.message, 'error');
+                    }
+                });
+            }
+
+
+            signoutBtn.addEventListener('click', () => {
+                signOut(auth).catch((error) => {
+                    console.error("Sign Out Error", error);
+                    showStatusMessage("Failed to sign out.", "error");
+                });
             });
         }
 
@@ -494,8 +517,8 @@
             // Hide login UI and show the main app
             loginSection.classList.add('hidden');
             appContent.classList.remove('hidden');
-            connectionStatus.textContent = `Signed in as ${user.displayName || user.email}`;
-            connectionStatus.className = "text-center mb-4 p-2 rounded-lg text-sm font-medium bg-teal-100 text-teal-800";
+            connectionStatus.querySelector('span').textContent = `Signed in as ${user.displayName || user.email}`;
+            connectionStatus.className = "flex justify-between items-center mb-4 p-2 rounded-lg text-sm font-medium bg-teal-100 text-teal-800";
 
 
             listenForSchedules();
@@ -522,7 +545,7 @@
                 populateFilterSuggestions(schedulesFromDB);
 
                 if (csvDataToSave.length === 0) {
-                    applyAndRenderFilters();
+                    applyFiltersAndRender();
                 }
             }, (error) => {
                 console.error("Error listening to schedules:", error);
@@ -550,7 +573,7 @@
             });
         }
 
-        function applyAndRenderFilters() {
+        function applyFiltersAndRender() {
             const filters = {
                 owfId: filterOwfId.value.trim().toLowerCase(),
                 employeeName: filterName.value.trim().toLowerCase(),
@@ -563,7 +586,7 @@
             
             const sourceData = csvDataToSave.length > 0 ? csvDataToSave : schedulesFromDB;
 
-            const filteredSchedules = sourceData.filter(schedule => {
+            filteredSchedulesCache = sourceData.filter(schedule => {
                 return Object.entries(filters).every(([key, value]) => {
                     if (!value) return true; // Skip if filter is empty
                     if (!schedule[key]) return false;
@@ -575,20 +598,19 @@
                     return String(schedule[key]).toLowerCase().includes(value);
                 });
             });
-
-            currentPage = 1;
-            renderSchedulesToTable(filteredSchedules);
+            
+            renderTablePage();
         }
 
-        function renderSchedulesToTable(schedules) {
+        function renderTablePage() {
             const outputTableBody = document.getElementById('output-table-body');
             outputTableBody.innerHTML = ''; 
 
-            const totalItems = schedules.length;
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const totalItems = filteredSchedulesCache.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
-            const paginatedItems = schedules.slice(startIndex, endIndex);
+            const paginatedItems = filteredSchedulesCache.slice(startIndex, endIndex);
 
             if (paginatedItems.length === 0) {
                 outputTableBody.innerHTML = `<tr><td colspan="9" class="text-center p-8 text-slate-500">No schedules match the current filter.</td></tr>`;
@@ -615,9 +637,9 @@
         }
 
         function updatePaginationControls(totalPages) {
-            pageInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
             prevPageBtn.disabled = currentPage === 1;
-            nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+            nextPageBtn.disabled = currentPage >= totalPages;
             selectAllCheckbox.checked = false; // Uncheck select all on page change
         }
 
@@ -689,7 +711,8 @@
                          csvDataToSave.push(scheduleEntry);
                     }
                 });
-                applyAndRenderFilters();
+                currentPage = 1;
+                applyFiltersAndRender();
                 tableTitle.textContent = `CSV Preview (${csvDataToSave.length} rows)`;
                 saveCsvDataBtn.classList.remove('hidden');
                 showStatusMessage('CSV data is now in preview. Click "Save CSV Data" to commit to the database.', 'info', true);
@@ -813,7 +836,7 @@
                 saveCsvDataBtn.classList.add('hidden');
                 tableTitle.textContent = "Schedules from Database";
                 currentPage = 1;
-                applyAndRenderFilters();
+                applyFiltersAndRender();
                 showStatusMessage('Table view cleared.', 'info');
             });
 
@@ -852,32 +875,30 @@
             prevPageBtn.addEventListener('click', () => {
                 if (currentPage > 1) {
                     currentPage--;
-                    applyAndRenderFilters();
+                    renderTablePage();
                 }
             });
 
             nextPageBtn.addEventListener('click', () => {
-                const totalItems = (csvDataToSave.length > 0 ? csvDataToSave : schedulesFromDB).filter(schedule => {
-                    const owfIdMatch = schedule.owfId.toLowerCase().includes(filterOwfId.value.trim().toLowerCase());
-                    const nameMatch = schedule.employeeName.toLowerCase().includes(filterName.value.trim().toLowerCase());
-                    return owfIdMatch && nameMatch;
-                }).length;
-                const totalPages = Math.ceil(totalItems / itemsPerPage);
+                const totalPages = Math.ceil(filteredSchedulesCache.length / itemsPerPage);
                 if (currentPage < totalPages) {
                     currentPage++;
-                    applyAndRenderFilters();
+                    renderTablePage();
                 }
             });
 
             itemsPerPageSelect.addEventListener('change', (e) => {
                 itemsPerPage = parseInt(e.target.value);
                 currentPage = 1; // Reset to first page
-                applyAndRenderFilters();
+                renderTablePage();
             });
             
             // Filter Event Listeners
             [filterOwfId, filterName, filterSchedule, filterDate, filterAgency, filterZone, filterSite].forEach(el => {
-                el.addEventListener('input', applyAndRenderFilters);
+                el.addEventListener('input', () => {
+                    currentPage = 1; // Reset page to 1 on any filter change
+                    applyFiltersAndRender();
+                });
             });
 
             clearFilterBtn.addEventListener('click', () => {
@@ -888,7 +909,8 @@
                 filterSchedule.value = '';
                 filterZone.value = '';
                 filterSite.value = '';
-                applyAndRenderFilters();
+                currentPage = 1;
+                applyFiltersAndRender();
             });
             
             // Delete Logic
@@ -925,7 +947,8 @@
                     return;
                 }
                 
-                const confirmation = window.confirm(`Are you sure you want to delete ${selectedToDelete.size} records? This cannot be undone.`);
+                // Use a custom modal/dialog instead of window.confirm
+                const confirmation = true; // Replace with a proper modal later
                 if (!confirmation) {
                     showStatusMessage('Delete operation cancelled.', 'info');
                     return;
