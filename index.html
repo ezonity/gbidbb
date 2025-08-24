@@ -276,7 +276,7 @@
                 </div>
                  <!-- Filter Controls -->
                 <div class="mb-4 p-4 bg-slate-50 rounded-lg border border-slate-200">
-                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                         <div>
                             <label for="filter-owfid" class="block text-sm font-medium text-slate-700">OWF ID</label>
                             <input type="text" id="filter-owfid" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
@@ -290,9 +290,16 @@
                             <input type="text" id="filter-agency" list="agency-list" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
                             <datalist id="agency-list"></datalist>
                         </div>
-                         <div>
-                            <label for="filter-date" class="block text-sm font-medium text-slate-700">Date</label>
-                            <input type="date" id="filter-date" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                         <!-- Binago ang single date filter para maging date range -->
+                         <div class="lg:col-span-2 grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="filter-date-from" class="block text-sm font-medium text-slate-700">Date From</label>
+                                <input type="date" id="filter-date-from" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                            </div>
+                            <div>
+                                <label for="filter-date-to" class="block text-sm font-medium text-slate-700">Date To</label>
+                                <input type="date" id="filter-date-to" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                            </div>
                         </div>
                          <div>
                             <label for="filter-schedule" class="block text-sm font-medium text-slate-700">Schedule</label>
@@ -331,12 +338,10 @@
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Hours</th>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Zone</th>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Site</th>
-                                <!-- Idinagdag ang Actions column header -->
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="output-table-body" class="bg-white divide-y divide-slate-200">
-                            <!-- In-update ang colspan para sa placeholder -->
                             <tr><td colspan="10" class="text-center p-8 text-slate-500">Please sign in to view schedules.</td></tr>
                         </tbody>
                     </table>
@@ -393,7 +398,7 @@
         let filteredSchedulesCache = []; 
 
         // --- DOM ELEMENTS ---
-        let loginSection, appContent, connectionStatus, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDate, filterSchedule, filterZone, filterSite, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, authStatus, signoutBtn, userInfo, outputTableBody;
+        let loginSection, appContent, connectionStatus, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDateFrom, filterDateTo, filterSchedule, filterZone, filterSite, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, authStatus, signoutBtn, userInfo, outputTableBody;
         let isScrolling = false;
 
         function initializeDOMElements() {
@@ -414,7 +419,9 @@
             filterOwfId = document.getElementById('filter-owfid');
             filterName = document.getElementById('filter-name');
             filterAgency = document.getElementById('filter-agency');
-            filterDate = document.getElementById('filter-date');
+            // In-update para sa date range
+            filterDateFrom = document.getElementById('filter-date-from');
+            filterDateTo = document.getElementById('filter-date-to');
             filterSchedule = document.getElementById('filter-schedule');
             filterZone = document.getElementById('filter-zone');
             filterSite = document.getElementById('filter-site');
@@ -530,7 +537,8 @@
                 owfId: filterOwfId.value.trim().toLowerCase(),
                 employeeName: filterName.value.trim().toLowerCase(),
                 agencyName: filterAgency.value.trim().toLowerCase(),
-                date: filterDate.value,
+                dateFrom: filterDateFrom.value, // In-update para sa date range
+                dateTo: filterDateTo.value,     // In-update para sa date range
                 schedule: filterSchedule.value.trim().toLowerCase(),
                 zone: filterZone.value.trim().toLowerCase(),
                 site: filterSite.value.trim().toLowerCase()
@@ -539,12 +547,28 @@
             const sourceData = csvDataToSave.length > 0 ? csvDataToSave : schedulesFromDB;
 
             filteredSchedulesCache = sourceData.filter(schedule => {
-                return Object.entries(filters).every(([key, value]) => {
-                    if (!value) return true;
-                    if (!schedule[key]) return false;
-                    if (key === 'date') return schedule.date === value;
-                    return String(schedule[key]).toLowerCase().includes(value);
-                });
+                // Check other filters first
+                const otherFiltersMatch = (
+                    (!filters.owfId || String(schedule.owfId).toLowerCase().includes(filters.owfId)) &&
+                    (!filters.employeeName || String(schedule.employeeName).toLowerCase().includes(filters.employeeName)) &&
+                    (!filters.agencyName || String(schedule.agencyName).toLowerCase().includes(filters.agencyName)) &&
+                    (!filters.schedule || String(schedule.schedule).toLowerCase().includes(filters.schedule)) &&
+                    (!filters.zone || String(schedule.zone).toLowerCase().includes(filters.zone)) &&
+                    (!filters.site || String(schedule.site).toLowerCase().includes(filters.site))
+                );
+
+                if (!otherFiltersMatch) return false;
+
+                // Date range filtering logic
+                const scheduleDate = schedule.date;
+                if (filters.dateFrom && scheduleDate < filters.dateFrom) {
+                    return false;
+                }
+                if (filters.dateTo && scheduleDate > filters.dateTo) {
+                    return false;
+                }
+
+                return true;
             });
             
             renderTablePage();
@@ -565,7 +589,7 @@
                  paginatedItems.forEach(schedule => {
                     const docId = `${schedule.owfId}_${schedule.date}`;
                     const newRow = outputTableBody.insertRow();
-                    newRow.dataset.docId = docId; // Magdagdag ng docId sa row para madaling ma-access
+                    newRow.dataset.docId = docId;
                     const isChecked = selectedToDelete.has(docId);
                     newRow.innerHTML = `
                         <td class="px-6 py-4"><input type="checkbox" class="delete-checkbox" data-doc-id="${docId}" ${isChecked ? 'checked' : ''}></td>
@@ -861,7 +885,8 @@
                 renderTablePage();
             });
             
-            [filterOwfId, filterName, filterSchedule, filterDate, filterAgency, filterZone, filterSite].forEach(el => {
+            // In-update para sa date range
+            [filterOwfId, filterName, filterSchedule, filterDateFrom, filterDateTo, filterAgency, filterZone, filterSite].forEach(el => {
                 el.addEventListener('input', () => {
                     currentPage = 1;
                     applyFiltersAndRender();
@@ -872,7 +897,8 @@
                 filterOwfId.value = '';
                 filterName.value = '';
                 filterAgency.value = '';
-                filterDate.value = '';
+                filterDateFrom.value = ''; // In-update para sa date range
+                filterDateTo.value = '';   // In-update para sa date range
                 filterSchedule.value = '';
                 filterZone.value = '';
                 filterSite.value = '';
