@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Idinagdag ang PapaParse library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -31,11 +33,26 @@
             padding-bottom: 0.75rem;
             border-bottom: 1px solid #e2e8f0;
         }
+        #resultsTable th, #resultsTable td {
+            white-space: nowrap;
+        }
+        .diag-box {
+            background-color: #f3f4f6;
+            border-left: 4px solid #6366f1;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+            text-align: left;
+        }
+        .diag-box ul {
+            list-style-position: inside;
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 md:p-6">
 
-    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl max-w-6xl w-full border border-slate-200">
+    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl max-w-full w-full border border-slate-200">
         <div class="relative text-center mb-8">
             <div class="absolute left-0 top-0 flex items-center gap-3 h-full">
                 <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjRkRCMDEzIi8+PHRleHQgeD0iNTAiIHk9IjY1IiBmb250LWZhbWlseT0iY3Vyc2l2ZSwgc2VyaWYiIGZvbnQtc2l6ZT0iNjAiIGZvbnQtd2VpZ-hdPSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSI+RzwvdGV4dD48L3N2Zz4=" alt="GBI Logo" class="h-10 w-10 object-contain">
@@ -176,47 +193,6 @@
                     Add Another Schedule Block
                 </button>
                 
-                <!-- Specific Schedule Changes Section -->
-                <div class="form-section">
-                     <h3 class="form-section-header">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sky-600"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path><path d="m9 16 2 2 4-4"></path></svg>
-                        <span>Special Schedule Changes (Optional)</span>
-                    </h3>
-                    <div id="specific-changes-container" class="space-y-4">
-                        <!-- Template for a single change -->
-                        <div id="specific-change-template" class="specific-change-block grid grid-cols-1 md:grid-cols-3 gap-4 items-center hidden">
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700">Day of Week</label>
-                                <select name="specificDay" class="mt-1 block w-full px-3 py-2 border border-slate-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
-                                    <option value="">Select a Day</option>
-                                    <option value="Monday">Monday</option>
-                                    <option value="Tuesday">Tuesday</option>
-                                    <option value="Wednesday">Wednesday</option>
-                                    <option value="Thursday">Thursday</option>
-                                    <option value="Friday">Friday</option>
-                                    <option value="Saturday">Saturday</option>
-                                    <option value="Sunday">Sunday</option>
-                                    <option value="Unknown">Unknown</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-700">New Work Schedule</label>
-                                <input type="text" name="specificSchedule" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" placeholder="e.g., 7am-4pm or RESTDAY">
-                            </div>
-                            <div class="self-end pt-5">
-                                 <button type="button" class="remove-specific-btn w-full flex items-center justify-center gap-2 py-2 px-4 border border-transparent rounded-lg text-sm font-medium text-red-600 hover:text-red-800 hover:bg-red-50 transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                                    Remove
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" id="add-specific-change-btn" class="mt-4 w-full flex justify-center items-center gap-2 py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-sky-500 hover:text-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        Add Specific Change
-                    </button>
-                </div>
-                
                 <!-- Vacation Leave Section -->
                 <div class="form-section">
                      <h3 class="form-section-header">
@@ -258,13 +234,16 @@
             <div id="output-container" class="mt-8 border-t-2 border-slate-200 pt-8">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
                     <h3 id="table-title" class="text-xl font-bold text-slate-800">Schedules from Database</h3>
-                    <div class="flex space-x-2">
+                    <div class="flex flex-wrap space-x-2">
                         <button id="delete-selected-btn" class="hidden flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all">
                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                            Delete Selected
                         </button>
                         <button id="save-csv-data-btn" class="hidden flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all">
                            Save CSV Data to Database
+                        </button>
+                        <button id="plotting-btn" class="flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all">
+                            Plotting
                         </button>
                         <button id="export-button" class="flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all">
                             Export View
@@ -276,7 +255,7 @@
                 </div>
                  <!-- Filter Controls -->
                 <div class="mb-4 p-4 bg-slate-50 rounded-lg border border-slate-200">
-                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         <div>
                             <label for="filter-owfid" class="block text-sm font-medium text-slate-700">OWF ID</label>
                             <input type="text" id="filter-owfid" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
@@ -290,8 +269,7 @@
                             <input type="text" id="filter-agency" list="agency-list" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
                             <datalist id="agency-list"></datalist>
                         </div>
-                         <!-- Binago ang single date filter para maging date range -->
-                         <div class="lg:col-span-2 grid grid-cols-2 gap-4">
+                         <div class="lg:col-span-1 grid grid-cols-2 gap-4">
                             <div>
                                 <label for="filter-date-from" class="block text-sm font-medium text-slate-700">Date From</label>
                                 <input type="date" id="filter-date-from" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
@@ -370,6 +348,63 @@
         </div>
     </div>
 
+    <!-- Plotting Modal -->
+    <div id="plotting-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center p-4">
+        <div class="relative mx-auto p-6 border w-full max-w-5xl shadow-lg rounded-xl bg-white">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">Schedule Detailer Tool</h1>
+                <p class="text-gray-500 mt-2">Pagsamahin ang Master Info at Daily Schedule.</p>
+            </div>
+    
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="masterFile" class="block text-sm font-medium text-gray-700 mb-2">1. Master Info File</label>
+                    <p class="text-xs text-gray-500 mb-2">(Pinagkukunan ng lahat ng detalye)</p>
+                    <input type="file" id="masterFile" accept=".csv" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 cursor-pointer"/>
+                </div>
+                <div>
+                    <label for="detailedScheduleFile" class="block text-sm font-medium text-gray-700 mb-2">2. Daily Schedule File</label>
+                    <p class="text-xs text-gray-500 mb-2">(Pinagkukunan ng Petsa at Shift)</p>
+                    <input type="file" id="detailedScheduleFile" accept=".csv" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 cursor-pointer"/>
+                </div>
+            </div>
+    
+            <div class="text-center">
+                <button id="processButton" class="bg-violet-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 transition-transform transform hover:scale-105">
+                    Process Files
+                </button>
+            </div>
+            
+            <div id="status" class="text-center mt-4 text-sm text-gray-600"></div>
+            <div id="diagnostics" class="diag-box hidden"></div>
+    
+            <div id="resultsSection" class="hidden mt-10">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Completed Schedule</h2>
+                    <div class="flex space-x-2">
+                        <button id="downloadButton" class="bg-green-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-transform transform hover:scale-105">
+                            Download CSV
+                        </button>
+                        <button id="clearPlottingViewBtn" class="bg-gray-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-transform transform hover:scale-105">
+                            Clear View
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-auto bg-white rounded-lg shadow max-h-96">
+                    <table id="resultsTable" class="w-full text-xs text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50"></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+             <div class="items-center px-4 py-3 mt-4">
+                <button id="close-plotting-modal" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDK -->
     <script type="module">
         // Import Firebase modules
@@ -396,9 +431,10 @@
         let itemsPerPage = 100;
         let selectedToDelete = new Set();
         let filteredSchedulesCache = []; 
+        let finalPlottingData = [];
 
         // --- DOM ELEMENTS ---
-        let loginSection, appContent, connectionStatus, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDateFrom, filterDateTo, filterSchedule, filterZone, filterSite, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, authStatus, signoutBtn, userInfo, outputTableBody;
+        let loginSection, appContent, connectionStatus, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDateFrom, filterDateTo, filterSchedule, filterZone, filterSite, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, authStatus, signoutBtn, userInfo, outputTableBody, plottingBtn, plottingModal, closePlottingModal, addVacationLeaveBtn, vacationLeaveContainer, vacationLeaveTemplate, clearPlottingViewBtn;
         let isScrolling = false;
 
         function initializeDOMElements() {
@@ -419,7 +455,6 @@
             filterOwfId = document.getElementById('filter-owfid');
             filterName = document.getElementById('filter-name');
             filterAgency = document.getElementById('filter-agency');
-            // In-update para sa date range
             filterDateFrom = document.getElementById('filter-date-from');
             filterDateTo = document.getElementById('filter-date-to');
             filterSchedule = document.getElementById('filter-schedule');
@@ -435,6 +470,13 @@
             authStatus = document.getElementById('auth-status');
             userInfo = document.getElementById('user-info');
             outputTableBody = document.getElementById('output-table-body');
+            plottingBtn = document.getElementById('plotting-btn');
+            plottingModal = document.getElementById('plotting-modal');
+            closePlottingModal = document.getElementById('close-plotting-modal');
+            addVacationLeaveBtn = document.getElementById('add-vacation-leave-btn');
+            vacationLeaveContainer = document.getElementById('vacation-leave-container');
+            vacationLeaveTemplate = document.getElementById('vacation-leave-template');
+            clearPlottingViewBtn = document.getElementById('clearPlottingViewBtn');
         }
 
         // --- MAIN INITIALIZATION FUNCTION ---
@@ -537,8 +579,8 @@
                 owfId: filterOwfId.value.trim().toLowerCase(),
                 employeeName: filterName.value.trim().toLowerCase(),
                 agencyName: filterAgency.value.trim().toLowerCase(),
-                dateFrom: filterDateFrom.value, // In-update para sa date range
-                dateTo: filterDateTo.value,     // In-update para sa date range
+                dateFrom: filterDateFrom.value,
+                dateTo: filterDateTo.value,
                 schedule: filterSchedule.value.trim().toLowerCase(),
                 zone: filterZone.value.trim().toLowerCase(),
                 site: filterSite.value.trim().toLowerCase()
@@ -547,7 +589,6 @@
             const sourceData = csvDataToSave.length > 0 ? csvDataToSave : schedulesFromDB;
 
             filteredSchedulesCache = sourceData.filter(schedule => {
-                // Check other filters first
                 const otherFiltersMatch = (
                     (!filters.owfId || String(schedule.owfId).toLowerCase().includes(filters.owfId)) &&
                     (!filters.employeeName || String(schedule.employeeName).toLowerCase().includes(filters.employeeName)) &&
@@ -559,7 +600,6 @@
 
                 if (!otherFiltersMatch) return false;
 
-                // Date range filtering logic
                 const scheduleDate = schedule.date;
                 if (filters.dateFrom && scheduleDate < filters.dateFrom) {
                     return false;
@@ -624,7 +664,7 @@
                 topScrollbarDummy.style.width = table.scrollWidth + 'px';
             }
         }
-
+        
         // --- DOM MANIPULATION & EVENT LISTENERS ---
         document.addEventListener('DOMContentLoaded', () => {
             initializeDOMElements();
@@ -636,12 +676,6 @@
             const addScheduleBtn = document.getElementById('add-schedule-btn');
             const scheduleBlocksContainer = document.getElementById('schedule-blocks-container');
             const csvFileInput = document.getElementById('csv-file-input');
-            const addSpecificChangeBtn = document.getElementById('add-specific-change-btn');
-            const specificChangesContainer = document.getElementById('specific-changes-container');
-            const specificChangeTemplate = document.getElementById('specific-change-template');
-            const addVacationLeaveBtn = document.getElementById('add-vacation-leave-btn');
-            const vacationLeaveContainer = document.getElementById('vacation-leave-container');
-            const vacationLeaveTemplate = document.getElementById('vacation-leave-template');
             let scheduleBlockCount = 1;
 
             uploadCsvBtn.addEventListener('click', () => {
@@ -741,22 +775,15 @@
                     employeeName: document.getElementById('employeeName').value,
                     agencyName: document.getElementById('agencyName').value,
                     zone: document.getElementById('zone').value,
-                    site: document.getElementById('site').value
+                    site: document.getElementById('site').value,
                 };
-                if (!employeeInfo.owfId || !employeeInfo.employeeName || !employeeInfo.agencyName || !employeeInfo.zone || !employeeInfo.site) {
-                    showStatusMessage('Please fill out all employee information fields.', 'error');
-                    return;
-                }
+                
                 const overrides = {};
                 document.querySelectorAll('.vacation-leave-block:not(#vacation-leave-template)').forEach(block => {
                     const date = block.querySelector('[name="vacationDate"]').value;
                     if (date) overrides[`${employeeInfo.owfId}-${date}`] = 'VACATION LEAVE';
                 });
-                document.querySelectorAll('.specific-change-block:not(#specific-change-template)').forEach(block => {
-                    const day = block.querySelector('[name="specificDay"]').value;
-                    const schedule = block.querySelector('[name="specificSchedule"]').value;
-                    if (day && schedule) overrides[day.toLowerCase()] = schedule;
-                });
+
                 let allSchedulesValid = true;
                 const scheduleBlocks = scheduleBlocksContainer.querySelectorAll('.schedule-block');
                 const allSchedulePromises = [];
@@ -783,7 +810,7 @@
                     await Promise.all(allSchedulePromises);
                     showStatusMessage('Schedules saved to database successfully!', 'success');
                     scheduleForm.reset();
-                    document.querySelectorAll('.specific-change-block:not(#specific-change-template), .vacation-leave-block:not(#vacation-leave-template)').forEach(b => b.remove());
+                    document.querySelectorAll('.vacation-leave-block:not(#vacation-leave-template)').forEach(b => b.remove());
                 } catch (error) {
                     console.error("Error saving schedules:", error);
                     showStatusMessage('An error occurred while saving schedules.', 'error');
@@ -797,7 +824,7 @@
                 await setDoc(docRef, scheduleData);
             }
             
-            function generateSchedules(employeeInfo, scheduleData, overrides) {
+            function generateSchedules(employeeInfo, scheduleData, overrides = {}) {
                 const generated = [];
                 const startDate = new Date(scheduleData.transactionDateFrom);
                 const endDate = new Date(scheduleData.transactionDateTo);
@@ -808,16 +835,16 @@
                 for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
                     const currentDateString = d.toLocaleDateString('en-CA');
                     const dayOfWeek = dayNames[d.getDay()].toLowerCase();
+                    
                     let scheduleToDisplay = '';
                     const overrideKey = `${employeeInfo.owfId}-${currentDateString}`;
                     if (overrides.hasOwnProperty(overrideKey)) {
                         scheduleToDisplay = convertToMilitaryTime(overrides[overrideKey]);
-                    } else if (overrides.hasOwnProperty(dayOfWeek)) {
-                        scheduleToDisplay = convertToMilitaryTime(overrides[dayOfWeek]);
                     } else {
                         const normalizedRestDay = normalizeDayName(scheduleData.restDay);
                         scheduleToDisplay = (normalizedRestDay && dayOfWeek === normalizedRestDay) ? 'RESTDAY' : convertToMilitaryTime(scheduleData.workSchedule);
                     }
+                    
                     const totalHours = calculateWorkHours(scheduleToDisplay);
                     generated.push({ ...employeeInfo, date: currentDateString, schedule: scheduleToDisplay, totalHours });
                 }
@@ -859,11 +886,10 @@
                 scheduleBlocksContainer.appendChild(newBlock);
             });
             scheduleBlocksContainer.addEventListener('click', (e) => { if (e.target.classList.contains('remove-schedule-btn')) e.target.closest('.schedule-block').remove(); });
+            
             addVacationLeaveBtn.addEventListener('click', () => { const b = vacationLeaveTemplate.cloneNode(true); b.id = ''; b.classList.remove('hidden'); vacationLeaveContainer.appendChild(b); });
             vacationLeaveContainer.addEventListener('click', (e) => { if (e.target.closest('.remove-leave-btn')) e.target.closest('.vacation-leave-block').remove(); });
-            addSpecificChangeBtn.addEventListener('click', () => { const b = specificChangeTemplate.cloneNode(true); b.id = ''; b.classList.remove('hidden'); specificChangesContainer.appendChild(b); });
-            specificChangesContainer.addEventListener('click', (e) => { if (e.target.closest('.remove-specific-btn')) e.target.closest('.specific-change-block').remove(); });
-        
+
             prevPageBtn.addEventListener('click', () => {
                 if (currentPage > 1) {
                     currentPage--;
@@ -885,7 +911,6 @@
                 renderTablePage();
             });
             
-            // In-update para sa date range
             [filterOwfId, filterName, filterSchedule, filterDateFrom, filterDateTo, filterAgency, filterZone, filterSite].forEach(el => {
                 el.addEventListener('input', () => {
                     currentPage = 1;
@@ -897,8 +922,8 @@
                 filterOwfId.value = '';
                 filterName.value = '';
                 filterAgency.value = '';
-                filterDateFrom.value = ''; // In-update para sa date range
-                filterDateTo.value = '';   // In-update para sa date range
+                filterDateFrom.value = '';
+                filterDateTo.value = '';
                 filterSchedule.value = '';
                 filterZone.value = '';
                 filterSite.value = '';
@@ -983,23 +1008,20 @@
                 const row = outputTableBody.querySelector(`tr[data-doc-id="${docId}"]`);
                 if (!row) return;
 
-                const dateCell = row.querySelector('td[data-field="date"]');
-                const scheduleCell = row.querySelector('td[data-field="schedule"]');
-                const zoneCell = row.querySelector('td[data-field="zone"]');
-                const siteCell = row.querySelector('td[data-field="site"]');
-                const actionsCell = row.querySelector('td[data-field="actions"]');
+                // Store original values
+                Array.from(row.children).forEach(cell => {
+                    if (cell.dataset.field) {
+                        row.dataset[`original${cell.dataset.field}`] = cell.textContent;
+                    }
+                });
 
-                row.dataset.originalDate = dateCell.textContent;
-                row.dataset.originalSchedule = scheduleCell.textContent;
-                row.dataset.originalZone = zoneCell.textContent;
-                row.dataset.originalSite = siteCell.textContent;
+                // Create inputs
+                row.querySelector('td[data-field="date"]').innerHTML = `<input type="date" class="w-full p-1 border rounded-md" value="${row.dataset.originaldate}">`;
+                row.querySelector('td[data-field="schedule"]').innerHTML = `<input type="text" class="w-full p-1 border rounded-md" value="${row.dataset.originalschedule}">`;
+                row.querySelector('td[data-field="zone"]').innerHTML = `<input type="text" class="w-full p-1 border rounded-md" value="${row.dataset.originalzone}">`;
+                row.querySelector('td[data-field="site"]').innerHTML = `<input type="text" class="w-full p-1 border rounded-md" value="${row.dataset.originalsite}">`;
 
-                dateCell.innerHTML = `<input type="date" class="w-full p-1 border rounded-md" value="${dateCell.textContent}">`;
-                scheduleCell.innerHTML = `<input type="text" class="w-full p-1 border rounded-md" value="${scheduleCell.textContent}">`;
-                zoneCell.innerHTML = `<input type="text" class="w-full p-1 border rounded-md" value="${zoneCell.textContent}">`;
-                siteCell.innerHTML = `<input type="text" class="w-full p-1 border rounded-md" value="${siteCell.textContent}">`;
-
-                actionsCell.innerHTML = `
+                row.querySelector('td[data-field="actions"]').innerHTML = `
                     <button class="save-btn text-green-600 hover:text-green-800 font-medium mr-2" data-doc-id="${docId}">Save</button>
                     <button class="cancel-btn text-red-600 hover:text-red-800 font-medium" data-doc-id="${docId}">Cancel</button>
                 `;
@@ -1008,11 +1030,12 @@
             function handleCancelClick(docId) {
                 const row = outputTableBody.querySelector(`tr[data-doc-id="${docId}"]`);
                 if (!row) return;
-
-                row.querySelector('td[data-field="date"]').textContent = row.dataset.originalDate;
-                row.querySelector('td[data-field="schedule"]').textContent = row.dataset.originalSchedule;
-                row.querySelector('td[data-field="zone"]').textContent = row.dataset.originalZone;
-                row.querySelector('td[data-field="site"]').textContent = row.dataset.originalSite;
+                
+                Array.from(row.children).forEach(cell => {
+                    if (cell.dataset.field && cell.dataset.field !== 'actions') {
+                       cell.textContent = row.dataset[`original${cell.dataset.field}`];
+                    }
+                });
                 
                 row.querySelector('td[data-field="actions"]').innerHTML = `
                     <button class="edit-btn text-sky-600 hover:text-sky-800 font-medium" data-doc-id="${docId}">Edit</button>
@@ -1030,19 +1053,14 @@
                     return;
                 }
 
-                const newDate = row.querySelector('td[data-field="date"] input').value;
-                const newSchedule = row.querySelector('td[data-field="schedule"] input').value;
-                const newZone = row.querySelector('td[data-field="zone"] input').value;
-                const newSite = row.querySelector('td[data-field="site"] input').value;
-
-                const updatedSchedule = {
-                    ...originalSchedule,
-                    date: newDate,
-                    schedule: convertToMilitaryTime(newSchedule),
-                    totalHours: calculateWorkHours(convertToMilitaryTime(newSchedule)),
-                    zone: newZone,
-                    site: newSite,
-                };
+                const updatedSchedule = { ...originalSchedule };
+                
+                // Update properties from inputs
+                updatedSchedule.date = row.querySelector('td[data-field="date"] input').value;
+                updatedSchedule.schedule = convertToMilitaryTime(row.querySelector('td[data-field="schedule"] input').value);
+                updatedSchedule.zone = row.querySelector('td[data-field="zone"] input').value;
+                updatedSchedule.site = row.querySelector('td[data-field="site"] input').value;
+                updatedSchedule.totalHours = calculateWorkHours(updatedSchedule.schedule);
 
                 const newDocId = `${updatedSchedule.owfId}_${updatedSchedule.date}`;
                 showStatusMessage("Saving changes...", "info");
@@ -1061,6 +1079,185 @@
                     handleCancelClick(docId);
                 }
             }
+
+            // --- Plotting Tool Listeners ---
+            plottingBtn.addEventListener('click', () => plottingModal.classList.remove('hidden'));
+            closePlottingModal.addEventListener('click', () => plottingModal.classList.add('hidden'));
+            document.getElementById('processButton').addEventListener('click', processPlottingFiles);
+            document.getElementById('downloadButton').addEventListener('click', downloadPlottingCSV);
+            clearPlottingViewBtn.addEventListener('click', clearPlottingView);
+
+            function clearPlottingView() {
+                finalPlottingData = [];
+                document.getElementById('resultsSection').classList.add('hidden');
+                document.getElementById('diagnostics').classList.add('hidden');
+                document.getElementById('status').textContent = '';
+                document.getElementById('masterFile').value = '';
+                document.getElementById('detailedScheduleFile').value = '';
+            }
+
+            function parsePlottingFile(file) {
+                return new Promise((resolve, reject) => {
+                    if (!file) return reject(new Error("File not selected."));
+                    Papa.parse(file, {
+                        header: true,
+                        skipEmptyLines: true,
+                        dynamicTyping: false,
+                        transformHeader: header => header.trim(),
+                        complete: (results) => resolve(results),
+                        error: (error) => reject(error)
+                    });
+                });
+            }
+
+            function cleanId(idValue) {
+                if (idValue === null || idValue === undefined) return '';
+                let idStr = String(idValue).trim();
+                if (idStr.endsWith('.0')) idStr = idStr.slice(0, -2);
+                return idStr;
+            }
+
+            function findValue(row, possibleKeys) {
+                for (const key of possibleKeys) {
+                    if (row[key] !== undefined && row[key] !== null) {
+                        return row[key];
+                    }
+                }
+                return undefined;
+            }
+
+            async function processPlottingFiles() {
+                const masterFile = document.getElementById('masterFile').files[0];
+                const detailedFile = document.getElementById('detailedScheduleFile').files[0];
+                const statusDiv = document.getElementById('status');
+                const diagDiv = document.getElementById('diagnostics');
+                const resultsSection = document.getElementById('resultsSection');
+
+                statusDiv.textContent = 'Processing...';
+                diagDiv.classList.add('hidden');
+                resultsSection.classList.add('hidden');
+                statusDiv.classList.remove('text-red-500');
+                finalPlottingData = [];
+
+                if (!masterFile || !detailedFile) {
+                    statusDiv.textContent = 'Paki-upload ang parehong Master at Daily Schedule file.';
+                    statusDiv.classList.add('text-red-500');
+                    return;
+                }
+
+                try {
+                    const [masterResults, scheduleResults] = await Promise.all([parsePlottingFile(masterFile), parsePlottingFile(detailedFile)]);
+                    const masterData = masterResults.data;
+                    const scheduleData = scheduleResults.data;
+
+                    const masterMap = new Map();
+                    const masterIds = new Set();
+                    masterData.forEach(row => {
+                        const bioId = cleanId(findValue(row, ['BIO', 'OWF ID']));
+                        if (bioId) {
+                            masterMap.set(bioId, row);
+                            masterIds.add(bioId);
+                        }
+                    });
+
+                    const scheduleIds = new Set();
+                    
+                    scheduleData.forEach(scheduleRow => {
+                        const bioId = cleanId(findValue(scheduleRow, ['BIO', 'OWF ID']));
+                        if (!bioId) return;
+                        scheduleIds.add(bioId);
+                        
+                        const masterInfo = masterMap.get(bioId);
+                        
+                        if (masterInfo) {
+                            const shiftCode = findValue(scheduleRow, ['SHIFT_CODE', 'Schedule', 'SCHEDULE']);
+                            const transactionDay = findValue(scheduleRow, ['TRANSACTION_DAY', 'Date', 'DATE']);
+
+                            const newRow = {
+                                LASTNAME: masterInfo.LASTNAME, FIRSTNAME: masterInfo.FIRSTNAME, MIDDLENAME: masterInfo.MIDDLENAME,
+                                PROVIDER_CODE: masterInfo.PROVIDER_CODE, SITE: masterInfo.SITE, ZONE: masterInfo.ZONE,
+                                AREA_LOCATION: masterInfo.AREA_LOCATION, CLASSIFICATION: masterInfo.CLASSIFICATION, JOB_TYPE: masterInfo.JOB_TYPE,
+                                POSITION_CODE: masterInfo.POSITION_CODE, POST_CODE: masterInfo.POST_CODE, JOB_TITLE_CODE: masterInfo.JOB_TITLE_CODE,
+                                DAYTYPE: masterInfo.DAYTYPE, TRANSACTION_DAY: transactionDay, SHIFT_CODE: shiftCode, BIO: bioId
+                            };
+                            finalPlottingData.push(newRow);
+                        }
+                    });
+                    
+                    const desiredOrder = [
+                        'LASTNAME', 'FIRSTNAME', 'MIDDLENAME', 'PROVIDER_CODE', 'SITE', 'ZONE', 
+                        'AREA_LOCATION', 'CLASSIFICATION', 'JOB_TYPE', 'POSITION_CODE', 'POST_CODE', 
+                        'TRANSACTION_DAY', 'SHIFT_CODE', 'BIO', 'DAYTYPE', 'JOB_TITLE_CODE'
+                    ];
+
+                    const reorderedData = finalPlottingData.map(row => {
+                        const newRow = {};
+                        desiredOrder.forEach(header => {
+                            newRow[header] = row[header];
+                        });
+                        return newRow;
+                    });
+
+                    finalPlottingData = reorderedData;
+
+                    const matchingIds = new Set([...masterIds].filter(id => scheduleIds.has(id)));
+                    diagDiv.innerHTML = `<p class="font-bold mb-2">Diagnostics Report:</p><ul><li>- Natagpuang <b>${masterIds.size}</b> ID sa Master Info.</li><li>- Natagpuang <b>${scheduleIds.size}</b> ID sa Daily Schedule.</li><li>- Mayroong <b>${matchingIds.size}</b> na nag-match.</li></ul>`;
+                    diagDiv.classList.remove('hidden');
+
+                    if (finalPlottingData.length > 0) {
+                        displayPlottingResults(finalPlottingData);
+                        statusDiv.textContent = `Successfully processed ${finalPlottingData.length} records.`;
+                    } else {
+                        statusDiv.textContent = 'Walang schedule na nabuo.';
+                        statusDiv.classList.add('text-red-500');
+                    }
+
+                } catch (error) {
+                    console.error("Processing error:", error);
+                    statusDiv.textContent = `An error occurred: ${error.message}`;
+                    statusDiv.classList.add('text-red-500');
+                }
+            }
+
+            function displayPlottingResults(data) {
+                const resultsSection = document.getElementById('resultsSection');
+                const tableHead = document.querySelector('#resultsTable thead');
+                const tableBody = document.querySelector('#resultsTable tbody');
+                tableHead.innerHTML = '';
+                tableBody.innerHTML = '';
+                const headers = Object.keys(data[0]);
+                let headerRow = '<tr>';
+                headers.forEach(header => {
+                    headerRow += `<th scope="col" class="px-6 py-3">${header}</th>`;
+                });
+                headerRow += '</tr>';
+                tableHead.innerHTML = headerRow;
+                data.forEach(row => {
+                    let tableRow = '<tr class="bg-white border-b hover:bg-gray-50">';
+                    headers.forEach(header => {
+                        tableRow += `<td class="px-6 py-4">${row[header] || ''}</td>`;
+                    });
+                    tableRow += '</tr>';
+                    tableBody.innerHTML += tableRow;
+                });
+                resultsSection.classList.remove('hidden');
+            }
+
+            function downloadPlottingCSV() {
+                if (finalPlottingData.length === 0) {
+                    document.getElementById('status').textContent = 'No data to download.';
+                    return;
+                }
+                const csv = Papa.unparse(finalPlottingData);
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'Completed_Schedule.csv';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
 
             // Scrollbar Sync
             topScrollbarContainer.addEventListener('scroll', () => {
