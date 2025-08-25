@@ -48,6 +48,13 @@
         .diag-box ul {
             list-style-position: inside;
         }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 md:p-6">
@@ -235,27 +242,18 @@
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
                     <h3 id="table-title" class="text-xl font-bold text-slate-800">Schedules from Database</h3>
                     <div class="flex flex-wrap space-x-2">
-                        <button id="delete-selected-btn" class="hidden flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                           Delete Selected
-                        </button>
-                        <button id="save-csv-data-btn" class="hidden flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all">
-                           Save CSV Data to Database
-                        </button>
-                        <button id="plotting-btn" class="flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all">
-                            Plotting
-                        </button>
-                        <button id="export-button" class="flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all">
-                            Export View
-                        </button>
-                        <button id="clear-button" class="flex items-center gap-2 py-2 px-4 border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all">
-                            Clear View
-                        </button>
+                        <button id="approve-selected-btn" class="hidden flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">Approve Selected</button>
+                        <button id="clear-status-btn" class="hidden flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600">Clear Status</button>
+                        <button id="delete-selected-btn" class="hidden flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700">Delete Selected</button>
+                        <button id="save-csv-data-btn" class="hidden flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">Save CSV Data</button>
+                        <button id="plotting-btn" class="flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">Plotting</button>
+                        <button id="export-button" class="flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700">Export View</button>
+                        <button id="clear-button" class="flex items-center gap-2 py-2 px-4 border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50">Clear View</button>
                     </div>
                 </div>
                  <!-- Filter Controls -->
                 <div class="mb-4 p-4 bg-slate-50 rounded-lg border border-slate-200">
-                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                         <div>
                             <label for="filter-owfid" class="block text-sm font-medium text-slate-700">OWF ID</label>
                             <input type="text" id="filter-owfid" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
@@ -269,7 +267,7 @@
                             <input type="text" id="filter-agency" list="agency-list" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
                             <datalist id="agency-list"></datalist>
                         </div>
-                         <div class="lg:col-span-1 grid grid-cols-2 gap-4">
+                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label for="filter-date-from" class="block text-sm font-medium text-slate-700">Date From</label>
                                 <input type="date" id="filter-date-from" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
@@ -293,6 +291,16 @@
                            <input type="text" id="filter-site" list="site-list" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
                            <datalist id="site-list"></datalist>
                         </div>
+                        <div>
+                            <label for="filter-status" class="block text-sm font-medium text-slate-700">Status</label>
+                            <select id="filter-status" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                                <option value="">All</option>
+                                <option value="New Schedule">New Schedule</option>
+                                <option value="Change Schedule">Change Schedule</option>
+                                <option value="Edited">Edited</option>
+                                <option value="Approved">Approved</option>
+                            </select>
+                        </div>
                         <div class="self-end">
                             <button id="clear-filter-btn" class="w-full flex justify-center items-center gap-2 py-2 px-4 border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50">
                                 Clear All Filters
@@ -308,6 +316,7 @@
                         <thead class="bg-slate-50">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider"><input type="checkbox" id="select-all-checkbox"></th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">OWF ID</th>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Name</th>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Agency</th>
@@ -320,7 +329,7 @@
                             </tr>
                         </thead>
                         <tbody id="output-table-body" class="bg-white divide-y divide-slate-200">
-                            <tr><td colspan="10" class="text-center p-8 text-slate-500">Please sign in to view schedules.</td></tr>
+                            <tr><td colspan="11" class="text-center p-8 text-slate-500">Please sign in to view schedules.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -434,7 +443,7 @@
         let finalPlottingData = [];
 
         // --- DOM ELEMENTS ---
-        let loginSection, appContent, connectionStatus, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDateFrom, filterDateTo, filterSchedule, filterZone, filterSite, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, authStatus, signoutBtn, userInfo, outputTableBody, plottingBtn, plottingModal, closePlottingModal, addVacationLeaveBtn, vacationLeaveContainer, vacationLeaveTemplate, clearPlottingViewBtn;
+        let loginSection, appContent, connectionStatus, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDateFrom, filterDateTo, filterSchedule, filterZone, filterSite, filterStatus, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, authStatus, signoutBtn, userInfo, outputTableBody, plottingBtn, plottingModal, closePlottingModal, addVacationLeaveBtn, vacationLeaveContainer, vacationLeaveTemplate, clearPlottingViewBtn, approveSelectedBtn, clearStatusBtn;
         let isScrolling = false;
 
         function initializeDOMElements() {
@@ -460,6 +469,7 @@
             filterSchedule = document.getElementById('filter-schedule');
             filterZone = document.getElementById('filter-zone');
             filterSite = document.getElementById('filter-site');
+            filterStatus = document.getElementById('filter-status');
             clearFilterBtn = document.getElementById('clear-filter-btn');
             topScrollbarContainer = document.getElementById('top-scrollbar-container');
             topScrollbarDummy = document.getElementById('top-scrollbar-dummy');
@@ -477,6 +487,8 @@
             vacationLeaveContainer = document.getElementById('vacation-leave-container');
             vacationLeaveTemplate = document.getElementById('vacation-leave-template');
             clearPlottingViewBtn = document.getElementById('clearPlottingViewBtn');
+            approveSelectedBtn = document.getElementById('approve-selected-btn');
+            clearStatusBtn = document.getElementById('clear-status-btn');
         }
 
         // --- MAIN INITIALIZATION FUNCTION ---
@@ -583,7 +595,8 @@
                 dateTo: filterDateTo.value,
                 schedule: filterSchedule.value.trim().toLowerCase(),
                 zone: filterZone.value.trim().toLowerCase(),
-                site: filterSite.value.trim().toLowerCase()
+                site: filterSite.value.trim().toLowerCase(),
+                status: filterStatus.value
             };
             
             const sourceData = csvDataToSave.length > 0 ? csvDataToSave : schedulesFromDB;
@@ -595,7 +608,8 @@
                     (!filters.agencyName || String(schedule.agencyName).toLowerCase().includes(filters.agencyName)) &&
                     (!filters.schedule || String(schedule.schedule).toLowerCase().includes(filters.schedule)) &&
                     (!filters.zone || String(schedule.zone).toLowerCase().includes(filters.zone)) &&
-                    (!filters.site || String(schedule.site).toLowerCase().includes(filters.site))
+                    (!filters.site || String(schedule.site).toLowerCase().includes(filters.site)) &&
+                    (!filters.status || schedule.status === filters.status)
                 );
 
                 if (!otherFiltersMatch) return false;
@@ -624,15 +638,29 @@
             const paginatedItems = filteredSchedulesCache.slice(startIndex, endIndex);
 
             if (paginatedItems.length === 0) {
-                outputTableBody.innerHTML = `<tr><td colspan="10" class="text-center p-8 text-slate-500">No schedules match the current filter.</td></tr>`;
+                outputTableBody.innerHTML = `<tr><td colspan="11" class="text-center p-8 text-slate-500">No schedules match the current filter.</td></tr>`;
             } else {
                  paginatedItems.forEach(schedule => {
                     const docId = `${schedule.owfId}_${schedule.date}`;
                     const newRow = outputTableBody.insertRow();
                     newRow.dataset.docId = docId;
                     const isChecked = selectedToDelete.has(docId);
+
+                    let statusHtml = '';
+                    if (schedule.status) {
+                        let colorClass = '';
+                        switch(schedule.status) {
+                            case 'New Schedule': colorClass = 'bg-blue-100 text-blue-800'; break;
+                            case 'Change Schedule': colorClass = 'bg-yellow-100 text-yellow-800'; break;
+                            case 'Edited': colorClass = 'bg-purple-100 text-purple-800'; break;
+                            case 'Approved': colorClass = 'bg-green-100 text-green-800'; break;
+                        }
+                        statusHtml = `<span class="status-badge ${colorClass}">${schedule.status}</span>`;
+                    }
+
                     newRow.innerHTML = `
                         <td class="px-6 py-4"><input type="checkbox" class="delete-checkbox" data-doc-id="${docId}" ${isChecked ? 'checked' : ''}></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${statusHtml}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">${schedule.owfId}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${schedule.employeeName}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${schedule.agencyName}</td>
@@ -700,43 +728,34 @@
                     return;
                 }
                 
-                const mainRecords = [];
-                const overrideRecords = [];
                 const dataRows = lines.slice(1);
-                
+                csvDataToSave = [];
+                const dbMap = new Map(schedulesFromDB.map(s => [`${s.owfId}_${s.date}`, s]));
+
                 dataRows.forEach(line => {
                     const columns = parseCsvLine(line);
-                    if (columns.length < 10) return;
-                    const recordType = columns[0].toLowerCase();
-                    if (recordType === 'main') {
-                        mainRecords.push(columns);
-                    } else if (recordType === 'override') {
-                        overrideRecords.push(columns);
+                     const schedule = {
+                        owfId: columns[1] || '',
+                        employeeName: columns[2] || '',
+                        agencyName: columns[3] || '',
+                        zone: columns[4] || '',
+                        site: columns[5] || '',
+                        date: columns[6] ? new Date(columns[6]).toLocaleDateString('en-CA') : '',
+                        schedule: convertToMilitaryTime(columns[8] || ''),
+                        status: ''
+                    };
+                    schedule.totalHours = calculateWorkHours(schedule.schedule);
+
+                    const docId = `${schedule.owfId}_${schedule.date}`;
+                    const existingSchedule = dbMap.get(docId);
+
+                    if (!existingSchedule) {
+                        schedule.status = 'New Schedule';
+                    } else if (existingSchedule.schedule !== schedule.schedule) {
+                        schedule.status = 'Change Schedule';
                     }
-                });
 
-                csvDataToSave = [];
-                
-                mainRecords.forEach(columns => {
-                    const employeeInfo = { owfId: columns[1], employeeName: columns[2], agencyName: columns[3], zone: columns[4], site: columns[5] };
-                    const scheduleData = { transactionDateFrom: columns[6], transactionDateTo: columns[7], workSchedule: columns[8], restDay: columns[9] };
-                    const schedules = generateSchedules(employeeInfo, scheduleData, {});
-                    csvDataToSave.push(...schedules);
-                });
-
-                overrideRecords.forEach(columns => {
-                    const employeeInfo = { owfId: columns[1], employeeName: columns[2], agencyName: columns[3], zone: columns[4], site: columns[5] };
-                    const overrideDate = columns[6];
-                    const overrideSchedule = columns[8];
-                    
-                    const indexToOverride = csvDataToSave.findIndex(s => s.owfId === employeeInfo.owfId && s.date === overrideDate);
-
-                    if (indexToOverride !== -1) {
-                        const scheduleToDisplay = convertToMilitaryTime(overrideSchedule);
-                        const totalHours = calculateWorkHours(scheduleToDisplay);
-                        csvDataToSave[indexToOverride].schedule = scheduleToDisplay;
-                        csvDataToSave[indexToOverride].totalHours = totalHours;
-                    }
+                    csvDataToSave.push(schedule);
                 });
 
                 applyFiltersAndRender();
@@ -846,7 +865,8 @@
                     }
                     
                     const totalHours = calculateWorkHours(scheduleToDisplay);
-                    generated.push({ ...employeeInfo, date: currentDateString, schedule: scheduleToDisplay, totalHours });
+                    const newSchedule = { ...employeeInfo, date: currentDateString, schedule: scheduleToDisplay, totalHours, status: 'New Schedule' };
+                    generated.push(newSchedule);
                 }
                 return generated;
             }
@@ -911,7 +931,7 @@
                 renderTablePage();
             });
             
-            [filterOwfId, filterName, filterSchedule, filterDateFrom, filterDateTo, filterAgency, filterZone, filterSite].forEach(el => {
+            [filterOwfId, filterName, filterSchedule, filterDateFrom, filterDateTo, filterAgency, filterZone, filterSite, filterStatus].forEach(el => {
                 el.addEventListener('input', () => {
                     currentPage = 1;
                     applyFiltersAndRender();
@@ -927,6 +947,7 @@
                 filterSchedule.value = '';
                 filterZone.value = '';
                 filterSite.value = '';
+                filterStatus.value = '';
                 currentPage = 1;
                 applyFiltersAndRender();
             });
@@ -939,7 +960,10 @@
                     } else {
                         selectedToDelete.delete(docId);
                     }
-                    deleteSelectedBtn.classList.toggle('hidden', selectedToDelete.size === 0);
+                    const hasSelection = selectedToDelete.size > 0;
+                    deleteSelectedBtn.classList.toggle('hidden', !hasSelection);
+                    approveSelectedBtn.classList.toggle('hidden', !hasSelection);
+                    clearStatusBtn.classList.toggle('hidden', !hasSelection);
                 }
             });
 
@@ -954,20 +978,16 @@
                         selectedToDelete.delete(docId);
                     }
                 });
-                deleteSelectedBtn.classList.toggle('hidden', selectedToDelete.size === 0);
+                const hasSelection = selectedToDelete.size > 0;
+                deleteSelectedBtn.classList.toggle('hidden', !hasSelection);
+                approveSelectedBtn.classList.toggle('hidden', !hasSelection);
+                clearStatusBtn.classList.toggle('hidden', !hasSelection);
             });
 
             deleteSelectedBtn.addEventListener('click', async () => {
-                if (selectedToDelete.size === 0) {
-                    showStatusMessage('No items selected to delete.', 'info');
-                    return;
-                }
-                
+                if (selectedToDelete.size === 0) return;
                 const confirmation = confirm(`Are you sure you want to delete ${selectedToDelete.size} records? This cannot be undone.`);
-                if (!confirmation) {
-                    showStatusMessage('Delete operation cancelled.', 'info');
-                    return;
-                }
+                if (!confirmation) return;
 
                 showStatusMessage(`Deleting ${selectedToDelete.size} records...`, 'info');
                 const deletePromises = Array.from(selectedToDelete).map(docId => deleteScheduleFromDB(docId));
@@ -977,12 +997,44 @@
                     showStatusMessage(`${selectedToDelete.size} records deleted successfully.`, 'success');
                     selectedToDelete.clear();
                     deleteSelectedBtn.classList.add('hidden');
+                    approveSelectedBtn.classList.add('hidden');
+                    clearStatusBtn.classList.add('hidden');
                     selectAllCheckbox.checked = false;
                 } catch (error) {
                     console.error("Error deleting records:", error);
                     showStatusMessage('An error occurred while deleting records.', 'error');
                 }
             });
+
+            async function updateStatusForSelected(newStatus) {
+                if (selectedToDelete.size === 0) return;
+                showStatusMessage(`Updating status for ${selectedToDelete.size} records...`, 'info');
+                const updatePromises = [];
+                selectedToDelete.forEach(docId => {
+                    const schedule = schedulesFromDB.find(s => `${s.owfId}_${s.date}` === docId);
+                    if (schedule) {
+                        const updatedSchedule = { ...schedule, status: newStatus };
+                        updatePromises.push(saveScheduleToDB(updatedSchedule));
+                    }
+                });
+
+                try {
+                    await Promise.all(updatePromises);
+                    showStatusMessage(`Status updated for ${selectedToDelete.size} records.`, 'success');
+                    selectedToDelete.clear();
+                    deleteSelectedBtn.classList.add('hidden');
+                    approveSelectedBtn.classList.add('hidden');
+                    clearStatusBtn.classList.add('hidden');
+                    selectAllCheckbox.checked = false;
+                } catch (error) {
+                    console.error("Error updating status:", error);
+                    showStatusMessage('An error occurred while updating status.', 'error');
+                }
+            }
+
+            approveSelectedBtn.addEventListener('click', () => updateStatusForSelected('Approved'));
+            clearStatusBtn.addEventListener('click', () => updateStatusForSelected(''));
+
 
             async function deleteScheduleFromDB(docId) {
                 if (!currentUserId) throw new Error("User not authenticated.");
@@ -1061,6 +1113,7 @@
                 updatedSchedule.zone = row.querySelector('td[data-field="zone"] input').value;
                 updatedSchedule.site = row.querySelector('td[data-field="site"] input').value;
                 updatedSchedule.totalHours = calculateWorkHours(updatedSchedule.schedule);
+                updatedSchedule.status = 'Edited';
 
                 const newDocId = `${updatedSchedule.owfId}_${updatedSchedule.date}`;
                 showStatusMessage("Saving changes...", "info");
