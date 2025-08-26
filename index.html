@@ -728,34 +728,70 @@
                     return;
                 }
                 
+                const mainRecords = [];
+                const overrideRecords = [];
                 const dataRows = lines.slice(1);
-                csvDataToSave = [];
-                const dbMap = new Map(schedulesFromDB.map(s => [`${s.owfId}_${s.date}`, s]));
-
+                
                 dataRows.forEach(line => {
                     const columns = parseCsvLine(line);
-                     const schedule = {
-                        owfId: columns[1] || '',
-                        employeeName: columns[2] || '',
-                        agencyName: columns[3] || '',
-                        zone: columns[4] || '',
-                        site: columns[5] || '',
-                        date: columns[6] ? new Date(columns[6]).toLocaleDateString('en-CA') : '',
-                        schedule: convertToMilitaryTime(columns[8] || ''),
-                        status: ''
-                    };
-                    schedule.totalHours = calculateWorkHours(schedule.schedule);
-
-                    const docId = `${schedule.owfId}_${schedule.date}`;
-                    const existingSchedule = dbMap.get(docId);
-
-                    if (!existingSchedule) {
-                        schedule.status = 'New Schedule';
-                    } else if (existingSchedule.schedule !== schedule.schedule) {
-                        schedule.status = 'Change Schedule';
+                    if (columns.length < 2) return;
+                    const recordType = columns[0].toLowerCase();
+                    if (recordType === 'main') {
+                        mainRecords.push(columns);
+                    } else if (recordType === 'override') {
+                        overrideRecords.push(columns);
                     }
+                });
 
-                    csvDataToSave.push(schedule);
+                csvDataToSave = [];
+                const dbMap = new Map(schedulesFromDB.map(s => [`${s.owfId}_${s.date}`, s]));
+                
+                mainRecords.forEach(columns => {
+                    const employeeInfo = { 
+                        owfId: columns[1] || '', 
+                        employeeName: columns[2] || '', 
+                        agencyName: columns[3] || '', 
+                        zone: columns[4] || '', 
+                        site: columns[5] || '' 
+                    };
+                    const scheduleData = { 
+                        transactionDateFrom: columns[6] || '', 
+                        transactionDateTo: columns[7] || '', 
+                        workSchedule: columns[8] || '', 
+                        restDay: columns[9] || '' 
+                    };
+                    const schedules = generateSchedules(employeeInfo, scheduleData, {});
+                    
+                    schedules.forEach(schedule => {
+                        const docId = `${schedule.owfId}_${schedule.date}`;
+                        const existingSchedule = dbMap.get(docId);
+
+                        if (!existingSchedule) {
+                            schedule.status = 'New Schedule';
+                        } else if (existingSchedule.schedule !== schedule.schedule) {
+                            schedule.status = 'Change Schedule';
+                        } else {
+                            schedule.status = existingSchedule.status || '';
+                        }
+                        csvDataToSave.push(schedule);
+                    });
+                });
+
+                overrideRecords.forEach(columns => {
+                     const overrideInfo = { 
+                        owfId: columns[1] || '', 
+                        date: columns[6] ? new Date(columns[6]).toLocaleDateString('en-CA') : '',
+                        schedule: convertToMilitaryTime(columns[8] || '')
+                    };
+
+                    const indexToOverride = csvDataToSave.findIndex(s => s.owfId === overrideInfo.owfId && s.date === overrideInfo.date);
+
+                    if (indexToOverride !== -1) {
+                        const originalSchedule = csvDataToSave[indexToOverride];
+                        originalSchedule.schedule = overrideInfo.schedule;
+                        originalSchedule.totalHours = calculateWorkHours(overrideInfo.schedule);
+                        originalSchedule.status = 'Change Schedule';
+                    }
                 });
 
                 applyFiltersAndRender();
