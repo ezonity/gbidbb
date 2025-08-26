@@ -7,42 +7,42 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Idinagdag ang PapaParse library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* slate-50 */
+            font-family: 'Poppins', sans-serif;
+            background-color: #0f172a; /* slate-900 */
         }
         .form-section {
-            border: 1px solid #e2e8f0; /* slate-200 */
+            background-color: rgba(30, 41, 59, 0.5); /* slate-800 with 50% opacity */
+            border: 1px solid #334155; /* slate-700 */
             border-radius: 0.75rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            background-color: #ffffff;
+            padding: 1rem;
+            margin-bottom: 1rem;
         }
         .form-section-header {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            font-size: 1.125rem;
+            font-size: 1rem;
             font-weight: 600;
-            color: #1e293b; /* slate-800 */
+            color: #f1f5f9; /* slate-100 */
             margin-bottom: 1rem;
             padding-bottom: 0.75rem;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #334155; /* slate-700 */
         }
         #resultsTable th, #resultsTable td {
             white-space: nowrap;
         }
         .diag-box {
-            background-color: #f3f4f6;
-            border-left: 4px solid #6366f1;
+            background-color: #1e293b; /* slate-800 */
+            border-left: 4px solid #db2777; /* pink-600 */
             padding: 1rem;
             margin-top: 1.5rem;
             font-size: 0.875rem;
-            color: #4b5563;
+            color: #cbd5e1; /* slate-300 */
             text-align: left;
         }
         .diag-box ul {
@@ -51,61 +51,62 @@
         .status-badge {
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
-            font-weight: 500;
-            font-size: 0.75rem;
+            font-weight: 600;
+            font-size: 0.65rem;
             text-transform: uppercase;
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4 md:p-6">
+<body class="flex items-center justify-center min-h-screen p-4 md:p-6 text-slate-300">
 
-    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl max-w-full w-full border border-slate-200">
-        <div class="relative text-center mb-8">
+    <div class="bg-slate-800 p-4 md:p-6 rounded-2xl shadow-2xl shadow-pink-500/10 max-w-full w-full border border-slate-700">
+        <div class="relative text-center mb-6">
             <div class="absolute left-0 top-0 flex items-center gap-3 h-full">
-                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjRkRCMDEzIi8+PHRleHQgeD0iNTAiIHk9IjY1IiBmb250LWZhbWlseT0iY3Vyc2l2ZSwgc2VyaWYiIGZvbnQtc2l6ZT0iNjAiIGZvbnQtd2VpZ-hdPSJib2xkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSI+RzwvdGV4dD48L3N2Zz4=" alt="GBI Logo" class="h-10 w-10 object-contain">
-                <span class="text-2xl font-bold text-slate-700">GBI</span>
+                <!-- Inayos ang GBI Logo -->
+                <img src="https://placehold.co/100x100/FDB013/FFFFFF?text=GBI&font=serif" alt="GBI Logo" class="h-10 w-10 object-contain rounded-full">
+                <span class="text-xl font-bold text-slate-200">GBI</span>
             </div>
-            <h2 class="text-3xl font-bold text-slate-800 inline-block">Employee Schedule Manager</h2>
+            <h2 class="text-2xl font-bold text-slate-100 inline-block">Employee Schedule Manager</h2>
         </div>
         
         <!-- Login Section -->
-        <div id="login-section" class=" p-8 border-2 border-dashed rounded-lg">
-            <h3 class="text-xl font-semibold text-slate-700 mb-4 text-center">Sign In</h3>
-             <div id="auth-status" class="text-center mb-4 p-2 rounded-lg text-sm font-medium hidden"></div>
-            <div class="space-y-4 max-w-sm mx-auto">
+        <div id="login-section" class=" p-6 border-2 border-dashed border-slate-700 rounded-lg">
+            <h3 class="text-lg font-semibold text-slate-200 mb-4 text-center">Sign In</h3>
+             <div id="auth-status" class="text-center mb-4 p-2 rounded-lg text-xs font-medium hidden"></div>
+            <div class="space-y-3 max-w-xs mx-auto">
                  <div>
-                    <label for="email" class="block text-sm font-medium text-slate-700 text-left">Email</label>
-                    <input type="email" id="email" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                    <label for="email" class="block text-xs font-medium text-slate-400 text-left">Email</label>
+                    <input type="email" id="email" class="mt-1 block w-full px-3 py-2 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                 </div>
                 <div>
-                    <label for="password" class="block text-sm font-medium text-slate-700 text-left">Password (min. 6 characters)</label>
-                    <input type="password" id="password" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                    <label for="password" class="block text-xs font-medium text-slate-400 text-left">Password</label>
+                    <input type="password" id="password" class="mt-1 block w-full px-3 py-2 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                 </div>
                 <div class="pt-2">
-                    <button id="signin-btn" class="w-full flex justify-center items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700">Sign In</button>
+                    <button id="signin-btn" class="w-full flex justify-center items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700">Sign In</button>
                 </div>
             </div>
         </div>
 
         <!-- Main App Content (Initially Hidden) -->
         <div id="app-content" class="hidden">
-             <div id="connection-status" class="flex justify-between items-center mb-4 p-2 rounded-lg text-sm font-medium">
+             <div id="connection-status" class="flex justify-between items-center mb-4 p-2 rounded-lg text-xs font-medium">
                 <span id="user-info"></span>
-                <button id="signout-btn" class="py-1 px-3 border border-transparent rounded-lg text-sm font-medium text-teal-700 bg-teal-200 hover:bg-teal-300 transition-colors">Sign Out</button>
+                <button id="signout-btn" class="py-1 px-3 border border-transparent rounded-lg text-xs font-medium text-pink-200 bg-pink-600/50 hover:bg-pink-600/80 transition-colors">Sign Out</button>
             </div>
             <!-- CSV Upload Section -->
-            <div class="form-section bg-slate-50/50">
+            <div class="form-section">
                 <h3 class="form-section-header">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sky-600"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pink-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
                     <span>Bulk Upload (CSV)</span>
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                     <div class="md:col-span-2">
                         <label for="csv-file-input" class="sr-only">Select CSV File</label>
-                        <input type="file" id="csv-file-input" accept=".csv" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 transition-colors">
+                        <input type="file" id="csv-file-input" accept=".csv" class="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-500/10 file:text-pink-300 hover:file:bg-pink-500/20 transition-colors cursor-pointer">
                     </div>
                     <div class="self-end">
-                        <button type="button" id="upload-csv-btn" class="w-full flex justify-center items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700">
+                        <button type="button" id="upload-csv-btn" class="w-full flex justify-center items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-xs font-medium text-white bg-pink-600 hover:bg-pink-700">
                             Preview CSV
                         </button>
                     </div>
@@ -113,25 +114,25 @@
             </div>
 
             <!-- Form for entering schedule data -->
-            <form id="schedule-form" class="space-y-6">
+            <form id="schedule-form" class="space-y-4">
                 <!-- Employee Information Section -->
                 <div class="form-section">
                     <h3 class="form-section-header">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sky-600"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pink-400"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         <span>Manual Entry</span>
                     </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label for="owfId" class="block text-sm font-medium text-slate-700">OWF ID</label>
-                            <input type="text" id="owfId" name="owfId" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" placeholder="e.g., 12345" required>
+                            <label for="owfId" class="block text-xs font-medium text-slate-400">OWF ID</label>
+                            <input type="text" id="owfId" name="owfId" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm" required>
                         </div>
                         <div>
-                            <label for="employeeName" class="block text-sm font-medium text-slate-700">Employee Name</label>
-                            <input type="text" id="employeeName" name="employeeName" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" placeholder="e.g., Bloy, Carlito" required>
+                            <label for="employeeName" class="block text-xs font-medium text-slate-400">Employee Name</label>
+                            <input type="text" id="employeeName" name="employeeName" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm" required>
                         </div>
                         <div>
-                            <label for="agencyName" class="block text-sm font-medium text-slate-700">Agency Name</label>
-                            <select id="agencyName" name="agencyName" class="mt-1 block w-full px-3 py-2 border border-slate-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" required>
+                            <label for="agencyName" class="block text-xs font-medium text-slate-400">Agency Name</label>
+                            <select id="agencyName" name="agencyName" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm" required>
                                 <option value="">Select an Agency</option>
                                 <option value="STAFF ALLIANCE">STAFF ALLIANCE</option>
                                 <option value="BMIRK">BMIRK</option>
@@ -141,18 +142,22 @@
                             </select>
                         </div>
                         <div>
-                            <label for="zone" class="block text-sm font-medium text-slate-700">Zone</label>
-                            <input type="text" id="zone" name="zone" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" placeholder="e.g., FEMS" required>
+                            <label for="zone" class="block text-xs font-medium text-slate-400">Zone</label>
+                            <input type="text" id="zone" name="zone" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm" required>
                         </div>
                         <div>
-                            <label for="site" class="block text-sm font-medium text-slate-700">Site</label>
-                            <select id="site" name="site" class="mt-1 block w-full px-3 py-2 border border-slate-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" required>
+                            <label for="site" class="block text-xs font-medium text-slate-400">Site</label>
+                            <select id="site" name="site" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm" required>
                                 <option value="">Select a Site</option>
                                 <option value="CP">CP</option>
                                 <option value="BP">BP</option>
                                 <option value="CFC">CFC</option>
                                 <option value="Unknown">Unknown</option>
                             </select>
+                        </div>
+                        <div>
+                            <label for="classification" class="block text-xs font-medium text-slate-400">Classification</label>
+                            <input type="text" id="classification" name="classification" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm" value="REG" required>
                         </div>
                     </div>
                 </div>
@@ -161,25 +166,25 @@
                 <div id="schedule-blocks-container" class="form-section">
                     <div class="schedule-block border-none p-0 m-0">
                          <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-semibold text-slate-700">Schedule 1</h3>
-                            <button type="button" class="remove-schedule-btn hidden text-sm font-medium text-red-600 hover:text-red-800">&times; Remove</button>
+                            <h3 class="text-base font-semibold text-slate-200">Schedule 1</h3>
+                            <button type="button" class="remove-schedule-btn hidden text-xs font-medium text-red-400 hover:text-red-300">&times; Remove</button>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label for="transactionDateFrom_1" class="block text-sm font-medium text-slate-700">Date From</label>
-                                <input type="date" name="transactionDateFrom" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" required>
+                                <label for="transactionDateFrom_1" class="block text-xs font-medium text-slate-400">Date From</label>
+                                <input type="date" name="transactionDateFrom" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm" required>
                             </div>
                             <div>
-                                <label for="transactionDateTo_1" class="block text-sm font-medium text-slate-700">Date To</label>
-                                <input type="date" name="transactionDateTo" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" required>
+                                <label for="transactionDateTo_1" class="block text-xs font-medium text-slate-400">Date To</label>
+                                <input type="date" name="transactionDateTo" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm" required>
                             </div>
                             <div class="md:col-span-2">
-                                <label for="workSchedule_1" class="block text-sm font-medium text-slate-700">Work Schedule</label>
-                                <input type="text" name="workSchedule" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" placeholder="e.g., 8am-5pm" required>
+                                <label for="workSchedule_1" class="block text-xs font-medium text-slate-400">Work Schedule</label>
+                                <input type="text" name="workSchedule" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm" placeholder="e.g., 8am-5pm" required>
                             </div>
                             <div class="md:col-span-2">
-                                <label for="restDay_1" class="block text-sm font-medium text-slate-700">Rest Day</label>
-                                <select name="restDay" class="mt-1 block w-full px-3 py-2 border border-slate-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                                <label for="restDay_1" class="block text-xs font-medium text-slate-400">Rest Day</label>
+                                <select name="restDay" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                                     <option value="">Select a Day</option>
                                     <option value="Sunday">Sunday</option>
                                     <option value="Monday">Monday</option>
@@ -195,7 +200,7 @@
                     </div>
                 </div>
                 
-                <button type="button" id="add-schedule-btn" class="w-full flex justify-center items-center gap-2 py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-sky-500 hover:text-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all">
+                <button type="button" id="add-schedule-btn" class="w-full flex justify-center items-center gap-2 py-2 px-4 border-2 border-dashed border-slate-700 rounded-lg text-xs font-medium text-slate-400 hover:border-pink-500 hover:text-pink-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     Add Another Schedule Block
                 </button>
@@ -203,106 +208,111 @@
                 <!-- Vacation Leave Section -->
                 <div class="form-section">
                      <h3 class="form-section-header">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sky-600"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line><path d="m9 16 2 2 4-4"></path></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pink-400"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line><path d="m9 16 2 2 4-4"></path></svg>
                         <span>Vacation Leave (Optional)</span>
                     </h3>
                     <div id="vacation-leave-container" class="space-y-4">
                         <!-- Template for a single leave date -->
                         <div id="vacation-leave-template" class="vacation-leave-block grid grid-cols-1 md:grid-cols-3 gap-4 items-center hidden">
                             <div class="md:col-span-2">
-                                <label class="block text-sm font-medium text-slate-700">Leave Date</label>
-                                <input type="date" name="vacationDate" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                                <label class="block text-xs font-medium text-slate-400">Leave Date</label>
+                                <input type="date" name="vacationDate" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                             </div>
                             <div class="self-end pt-5">
-                                 <button type="button" class="remove-leave-btn w-full flex items-center justify-center gap-2 py-2 px-4 border border-transparent rounded-lg text-sm font-medium text-red-600 hover:text-red-800 hover:bg-red-50 transition-colors">
+                                 <button type="button" class="remove-leave-btn w-full flex items-center justify-center gap-2 py-2 px-4 border border-transparent rounded-lg text-xs font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                     Remove
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <button type="button" id="add-vacation-leave-btn" class="mt-4 w-full flex justify-center items-center gap-2 py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-sky-500 hover:text-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all">
+                    <button type="button" id="add-vacation-leave-btn" class="mt-4 w-full flex justify-center items-center gap-2 py-2 px-4 border-2 border-dashed border-slate-700 rounded-lg text-xs font-medium text-slate-400 hover:border-pink-500 hover:text-pink-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                         Add Vacation Leave
                     </button>
                 </div>
 
-                <div class="pt-4">
-                    <button type="submit" id="submit-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-sky-600 hover:bg-sky-700">
+                <div class="pt-2">
+                    <button type="submit" id="submit-btn" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700">
                         Save Schedules to Database
                     </button>
                 </div>
             </form>
 
             <!-- Status message for feedback -->
-            <div id="status-message" class="mt-6 text-center hidden p-3 rounded-lg"></div>
+            <div id="status-message" class="mt-4 text-center hidden p-3 rounded-lg text-sm"></div>
 
             <!-- Container for the output table and buttons -->
-            <div id="output-container" class="mt-8 border-t-2 border-slate-200 pt-8">
+            <div id="output-container" class="mt-6 border-t-2 border-slate-700 pt-6">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
-                    <h3 id="table-title" class="text-xl font-bold text-slate-800">Schedules from Database</h3>
-                    <div class="flex flex-wrap space-x-2">
-                        <button id="approve-selected-btn" class="hidden flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700">Approve Selected</button>
-                        <button id="clear-status-btn" class="hidden flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-yellow-500 hover:bg-yellow-600">Clear Status</button>
-                        <button id="delete-selected-btn" class="hidden flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700">Delete Selected</button>
-                        <button id="save-csv-data-btn" class="hidden flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">Save CSV Data</button>
-                        <button id="plotting-btn" class="flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">Plotting</button>
-                        <button id="export-button" class="flex items-center gap-2 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700">Export View</button>
-                        <button id="clear-button" class="flex items-center gap-2 py-2 px-4 border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50">Clear View</button>
+                    <h3 id="table-title" class="text-xl font-bold text-slate-200">Schedules from Database</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="approve-selected-btn" class="hidden flex items-center gap-2 py-1.5 px-3 border border-transparent rounded-lg shadow-sm text-xs font-medium text-white bg-green-600 hover:bg-green-700">Approve Selected</button>
+                        <button id="clear-status-btn" class="hidden flex items-center gap-2 py-1.5 px-3 border border-transparent rounded-lg shadow-sm text-xs font-medium text-slate-800 bg-yellow-400 hover:bg-yellow-500">Clear Status</button>
+                        <button id="delete-selected-btn" class="hidden flex items-center gap-2 py-1.5 px-3 border border-transparent rounded-lg shadow-sm text-xs font-medium text-white bg-red-600 hover:bg-red-700">Delete Selected</button>
+                        <button id="save-csv-data-btn" class="hidden flex items-center gap-2 py-1.5 px-3 border border-transparent rounded-lg shadow-sm text-xs font-medium text-white bg-blue-600 hover:bg-blue-700">Save CSV Data</button>
+                        <button id="plotting-btn" class="flex items-center gap-2 py-1.5 px-3 border border-transparent rounded-lg shadow-sm text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700">Plotting</button>
+                        <button id="export-button" class="flex items-center gap-2 py-1.5 px-3 border border-transparent rounded-lg shadow-sm text-xs font-medium text-white bg-cyan-600 hover:bg-cyan-700">Export View</button>
+                        <button id="clear-button" class="flex items-center gap-2 py-1.5 px-3 border border-slate-600 rounded-lg shadow-sm text-xs font-medium text-slate-300 bg-slate-700 hover:bg-slate-600">Clear View</button>
                     </div>
                 </div>
                  <!-- Filter Controls -->
-                <div class="mb-4 p-4 bg-slate-50 rounded-lg border border-slate-200">
+                <div class="mb-4 p-4 bg-slate-800/50 border border-slate-700 rounded-lg">
                     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                         <div>
-                            <label for="filter-owfid" class="block text-sm font-medium text-slate-700">OWF ID</label>
-                            <input type="text" id="filter-owfid" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                            <label for="filter-owfid" class="block text-xs font-medium text-slate-400">OWF ID</label>
+                            <input type="text" id="filter-owfid" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                         </div>
                         <div>
-                            <label for="filter-name" class="block text-sm font-medium text-slate-700">Employee Name</label>
-                            <input type="text" id="filter-name" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                            <label for="filter-name" class="block text-xs font-medium text-slate-400">Employee Name</label>
+                            <input type="text" id="filter-name" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                         </div>
                          <div>
-                            <label for="filter-agency" class="block text-sm font-medium text-slate-700">Agency</label>
-                            <input type="text" id="filter-agency" list="agency-list" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                            <label for="filter-agency" class="block text-xs font-medium text-slate-400">Agency</label>
+                            <input type="text" id="filter-agency" list="agency-list" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                             <datalist id="agency-list"></datalist>
                         </div>
                          <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label for="filter-date-from" class="block text-sm font-medium text-slate-700">Date From</label>
-                                <input type="date" id="filter-date-from" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                                <label for="filter-date-from" class="block text-xs font-medium text-slate-400">Date From</label>
+                                <input type="date" id="filter-date-from" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                             </div>
                             <div>
-                                <label for="filter-date-to" class="block text-sm font-medium text-slate-700">Date To</label>
-                                <input type="date" id="filter-date-to" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                                <label for="filter-date-to" class="block text-xs font-medium text-slate-400">Date To</label>
+                                <input type="date" id="filter-date-to" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                             </div>
                         </div>
                          <div>
-                            <label for="filter-schedule" class="block text-sm font-medium text-slate-700">Schedule</label>
-                            <input type="text" id="filter-schedule" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                            <label for="filter-schedule" class="block text-xs font-medium text-slate-400">Schedule</label>
+                            <input type="text" id="filter-schedule" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                         </div>
                          <div>
-                            <label for="filter-zone" class="block text-sm font-medium text-slate-700">Zone</label>
-                            <input type="text" id="filter-zone" list="zone-list" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                            <label for="filter-zone" class="block text-xs font-medium text-slate-400">Zone</label>
+                            <input type="text" id="filter-zone" list="zone-list" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                              <datalist id="zone-list"></datalist>
                         </div>
                          <div>
-                            <label for="filter-site" class="block text-sm font-medium text-slate-700">Site</label>
-                           <input type="text" id="filter-site" list="site-list" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                            <label for="filter-site" class="block text-xs font-medium text-slate-400">Site</label>
+                           <input type="text" id="filter-site" list="site-list" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                            <datalist id="site-list"></datalist>
                         </div>
                         <div>
-                            <label for="filter-status" class="block text-sm font-medium text-slate-700">Status</label>
-                            <select id="filter-status" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                            <label for="filter-classification" class="block text-xs font-medium text-slate-400">Classification</label>
+                           <input type="text" id="filter-classification" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
+                        </div>
+                        <div>
+                            <label for="filter-status" class="block text-xs font-medium text-slate-400">Status</label>
+                            <select id="filter-status" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm">
                                 <option value="">All</option>
                                 <option value="New Schedule">New Schedule</option>
                                 <option value="Change Schedule">Change Schedule</option>
+                                <option value="New Restday">New Restday</option>
                                 <option value="Edited">Edited</option>
                                 <option value="Approved">Approved</option>
                             </select>
                         </div>
                         <div class="self-end">
-                            <button id="clear-filter-btn" class="w-full flex justify-center items-center gap-2 py-2 px-4 border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50">
+                            <button id="clear-filter-btn" class="w-full flex justify-center items-center gap-2 py-2 px-4 border border-slate-600 rounded-lg shadow-sm text-xs font-medium text-slate-300 bg-slate-700 hover:bg-slate-600">
                                 Clear All Filters
                             </button>
                         </div>
@@ -311,103 +321,104 @@
                 <div id="top-scrollbar-container" class="overflow-x-auto">
                     <div id="top-scrollbar-dummy" style="height: 1px;"></div>
                 </div>
-                <div id="bottom-scrollbar-container" class="overflow-x-auto rounded-lg border border-slate-200">
-                    <table class="min-w-full divide-y divide-slate-200">
-                        <thead class="bg-slate-50">
+                <div id="bottom-scrollbar-container" class="overflow-x-auto rounded-lg border border-slate-700">
+                    <table class="min-w-full divide-y divide-slate-700">
+                        <thead class="bg-slate-700/50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider"><input type="checkbox" id="select-all-checkbox"></th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">OWF ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Agency</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Date</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Schedule</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Hours</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Zone</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Site</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+                                <th class="px-4 py-2 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider"><input type="checkbox" id="select-all-checkbox" class="bg-slate-800 border-slate-600"></th>
+                                <th class="px-4 py-2 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">Status</th>
+                                <th class="px-4 py-2 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">OWF ID</th>
+                                <th class="px-4 py-2 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">Name</th>
+                                <th class="px-4 py-2 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">Agency</th>
+                                <th class="px-4 py-2 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">Date</th>
+                                <th class="px-4 py-2 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">Schedule</th>
+                                <th class="px-4 py-2 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">Total Hours</th>
+                                <th class="px-4 py-2 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">Zone</th>
+                                <th class="px-4 py-2 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">Site</th>
+                                <th class="px-4 py-2 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">Classification</th>
+                                <th class="px-4 py-2 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="output-table-body" class="bg-white divide-y divide-slate-200">
-                            <tr><td colspan="11" class="text-center p-8 text-slate-500">Please sign in to view schedules.</td></tr>
+                        <tbody id="output-table-body" class="divide-y divide-slate-700">
+                            <tr><td colspan="12" class="text-center p-8 text-slate-500">Please sign in to view schedules.</td></tr>
                         </tbody>
                     </table>
                 </div>
                 <!-- Pagination Controls -->
-                <div id="pagination-controls" class="mt-4 flex items-center justify-between">
+                <div id="pagination-controls" class="mt-4 flex items-center justify-between text-xs">
                     <div class="flex items-center gap-2">
-                        <label for="items-per-page" class="text-sm text-slate-600">Rows per page:</label>
-                        <select id="items-per-page" class="border-slate-300 rounded-lg text-sm">
+                        <label for="items-per-page" class="text-slate-400">Rows per page:</label>
+                        <select id="items-per-page" class="bg-slate-700 border-slate-600 text-slate-200 rounded-lg text-xs">
                             <option value="100">100</option>
                             <option value="250">250</option>
                             <option value="500">500</option>
                         </select>
                     </div>
-                    <span id="page-info" class="text-sm text-slate-600"></span>
+                    <span id="page-info" class="text-slate-400"></span>
                     <div class="flex gap-2">
-                        <button id="prev-page-btn" class="px-3 py-1 border border-slate-300 rounded-lg text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
-                        <button id="next-page-btn" class="px-3 py-1 border border-slate-300 rounded-lg text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
+                        <button id="prev-page-btn" class="px-3 py-1 border border-slate-600 rounded-lg font-medium text-slate-300 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
+                        <button id="next-page-btn" class="px-3 py-1 border border-slate-600 rounded-lg font-medium text-slate-300 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="flex justify-between items-center text-xs text-gray-400 mt-6">
+        <div class="flex justify-between items-center text-xs text-slate-500 mt-6">
             <div>© 2025 Powered by: EZONE</div>
             <div>Version: Angel Cake (DB)</div>
         </div>
     </div>
 
     <!-- Plotting Modal -->
-    <div id="plotting-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center p-4">
-        <div class="relative mx-auto p-6 border w-full max-w-5xl shadow-lg rounded-xl bg-white">
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-gray-800">Schedule Detailer Tool</h1>
-                <p class="text-gray-500 mt-2">Pagsamahin ang Master Info at Daily Schedule.</p>
+    <div id="plotting-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm overflow-y-auto h-full w-full flex items-center justify-center p-4">
+        <div class="relative mx-auto p-6 border w-full max-w-5xl shadow-lg rounded-xl bg-slate-800 border-slate-700">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold text-slate-200">Schedule Detailer Tool</h1>
+                <p class="text-slate-400 mt-2 text-sm">Pagsamahin ang Master Info at Daily Schedule.</p>
             </div>
     
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label for="masterFile" class="block text-sm font-medium text-gray-700 mb-2">1. Master Info File</label>
-                    <p class="text-xs text-gray-500 mb-2">(Pinagkukunan ng lahat ng detalye)</p>
-                    <input type="file" id="masterFile" accept=".csv" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 cursor-pointer"/>
+                    <label for="masterFile" class="block text-sm font-medium text-slate-300 mb-2">1. Master Info File</label>
+                    <p class="text-xs text-slate-500 mb-2">(Pinagkukunan ng lahat ng detalye)</p>
+                    <input type="file" id="masterFile" accept=".csv" class="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-500/10 file:text-pink-300 hover:file:bg-pink-500/20 transition-colors cursor-pointer"/>
                 </div>
                 <div>
-                    <label for="detailedScheduleFile" class="block text-sm font-medium text-gray-700 mb-2">2. Daily Schedule File</label>
-                    <p class="text-xs text-gray-500 mb-2">(Pinagkukunan ng Petsa at Shift)</p>
-                    <input type="file" id="detailedScheduleFile" accept=".csv" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 cursor-pointer"/>
+                    <label for="detailedScheduleFile" class="block text-sm font-medium text-slate-300 mb-2">2. Daily Schedule File</label>
+                    <p class="text-xs text-slate-500 mb-2">(Pinagkukunan ng Petsa at Shift)</p>
+                    <input type="file" id="detailedScheduleFile" accept=".csv" class="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-500/10 file:text-pink-300 hover:file:bg-pink-500/20 transition-colors cursor-pointer"/>
                 </div>
             </div>
     
             <div class="text-center">
-                <button id="processButton" class="bg-violet-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 transition-transform transform hover:scale-105">
+                <button id="processButton" class="bg-pink-600 text-white font-bold py-2.5 px-8 rounded-lg hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-transform transform hover:scale-105 text-sm">
                     Process Files
                 </button>
             </div>
             
-            <div id="status" class="text-center mt-4 text-sm text-gray-600"></div>
+            <div id="status" class="text-center mt-4 text-sm text-slate-400"></div>
             <div id="diagnostics" class="diag-box hidden"></div>
     
-            <div id="resultsSection" class="hidden mt-10">
+            <div id="resultsSection" class="hidden mt-8">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl font-bold text-gray-800">Completed Schedule</h2>
+                    <h2 class="text-xl font-bold text-slate-200">Completed Schedule</h2>
                     <div class="flex space-x-2">
-                        <button id="downloadButton" class="bg-green-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-transform transform hover:scale-105">
+                        <button id="downloadButton" class="bg-green-600 text-white font-bold py-1.5 px-4 rounded-lg hover:bg-green-700 text-xs">
                             Download CSV
                         </button>
-                        <button id="clearPlottingViewBtn" class="bg-gray-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-transform transform hover:scale-105">
+                        <button id="clearPlottingViewBtn" class="bg-slate-600 text-white font-bold py-1.5 px-4 rounded-lg hover:bg-slate-700 text-xs">
                             Clear View
                         </button>
                     </div>
                 </div>
-                <div class="overflow-auto bg-white rounded-lg shadow max-h-96">
-                    <table id="resultsTable" class="w-full text-xs text-left text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50"></thead>
+                <div class="overflow-auto bg-slate-800/50 rounded-lg shadow max-h-80 border border-slate-700">
+                    <table id="resultsTable" class="w-full text-xs text-left text-slate-400">
+                        <thead class="text-xs text-slate-300 uppercase bg-slate-700/50"></thead>
                         <tbody></tbody>
                     </table>
                 </div>
             </div>
              <div class="items-center px-4 py-3 mt-4">
-                <button id="close-plotting-modal" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                <button id="close-plotting-modal" class="px-4 py-2 bg-slate-700 text-white text-sm font-medium rounded-md w-full shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500">
                     Close
                 </button>
             </div>
@@ -443,7 +454,7 @@
         let finalPlottingData = [];
 
         // --- DOM ELEMENTS ---
-        let loginSection, appContent, connectionStatus, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDateFrom, filterDateTo, filterSchedule, filterZone, filterSite, filterStatus, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, authStatus, signoutBtn, userInfo, outputTableBody, plottingBtn, plottingModal, closePlottingModal, addVacationLeaveBtn, vacationLeaveContainer, vacationLeaveTemplate, clearPlottingViewBtn, approveSelectedBtn, clearStatusBtn;
+        let loginSection, appContent, connectionStatus, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDateFrom, filterDateTo, filterSchedule, filterZone, filterSite, filterStatus, filterClassification, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, authStatus, signoutBtn, userInfo, outputTableBody, plottingBtn, plottingModal, closePlottingModal, addVacationLeaveBtn, vacationLeaveContainer, vacationLeaveTemplate, clearPlottingViewBtn, approveSelectedBtn, clearStatusBtn;
         let isScrolling = false;
 
         function initializeDOMElements() {
@@ -470,6 +481,7 @@
             filterZone = document.getElementById('filter-zone');
             filterSite = document.getElementById('filter-site');
             filterStatus = document.getElementById('filter-status');
+            filterClassification = document.getElementById('filter-classification');
             clearFilterBtn = document.getElementById('clear-filter-btn');
             topScrollbarContainer = document.getElementById('top-scrollbar-container');
             topScrollbarDummy = document.getElementById('top-scrollbar-dummy');
@@ -532,7 +544,7 @@
             loginSection.classList.add('hidden');
             appContent.classList.remove('hidden');
             userInfo.textContent = `Signed in as ${user.displayName || user.email}`;
-            connectionStatus.className = "flex justify-between items-center mb-4 p-2 rounded-lg text-sm font-medium bg-teal-100 text-teal-800";
+            connectionStatus.className = "flex justify-between items-center mb-4 p-2 rounded-lg text-xs font-medium bg-pink-500/10 text-pink-300";
 
             listenForSchedules();
         }
@@ -596,7 +608,8 @@
                 schedule: filterSchedule.value.trim().toLowerCase(),
                 zone: filterZone.value.trim().toLowerCase(),
                 site: filterSite.value.trim().toLowerCase(),
-                status: filterStatus.value
+                status: filterStatus.value,
+                classification: filterClassification.value.trim().toLowerCase()
             };
             
             const sourceData = csvDataToSave.length > 0 ? csvDataToSave : schedulesFromDB;
@@ -609,7 +622,8 @@
                     (!filters.schedule || String(schedule.schedule).toLowerCase().includes(filters.schedule)) &&
                     (!filters.zone || String(schedule.zone).toLowerCase().includes(filters.zone)) &&
                     (!filters.site || String(schedule.site).toLowerCase().includes(filters.site)) &&
-                    (!filters.status || schedule.status === filters.status)
+                    (!filters.status || schedule.status === filters.status) &&
+                    (!filters.classification || String(schedule.classification || 'reg').toLowerCase().includes(filters.classification))
                 );
 
                 if (!otherFiltersMatch) return false;
@@ -638,11 +652,12 @@
             const paginatedItems = filteredSchedulesCache.slice(startIndex, endIndex);
 
             if (paginatedItems.length === 0) {
-                outputTableBody.innerHTML = `<tr><td colspan="11" class="text-center p-8 text-slate-500">No schedules match the current filter.</td></tr>`;
+                outputTableBody.innerHTML = `<tr><td colspan="12" class="text-center p-8 text-slate-500">No schedules match the current filter.</td></tr>`;
             } else {
                  paginatedItems.forEach(schedule => {
                     const docId = `${schedule.owfId}_${schedule.date}`;
                     const newRow = outputTableBody.insertRow();
+                    newRow.className = "hover:bg-slate-700/50";
                     newRow.dataset.docId = docId;
                     const isChecked = selectedToDelete.has(docId);
 
@@ -650,27 +665,29 @@
                     if (schedule.status) {
                         let colorClass = '';
                         switch(schedule.status) {
-                            case 'New Schedule': colorClass = 'bg-blue-100 text-blue-800'; break;
-                            case 'Change Schedule': colorClass = 'bg-yellow-100 text-yellow-800'; break;
-                            case 'Edited': colorClass = 'bg-purple-100 text-purple-800'; break;
-                            case 'Approved': colorClass = 'bg-green-100 text-green-800'; break;
+                            case 'New Schedule': colorClass = 'bg-blue-500/20 text-blue-300'; break;
+                            case 'Change Schedule': colorClass = 'bg-yellow-500/20 text-yellow-300'; break;
+                            case 'New Restday': colorClass = 'bg-orange-500/20 text-orange-300'; break;
+                            case 'Edited': colorClass = 'bg-purple-500/20 text-purple-300'; break;
+                            case 'Approved': colorClass = 'bg-green-500/20 text-green-300'; break;
                         }
                         statusHtml = `<span class="status-badge ${colorClass}">${schedule.status}</span>`;
                     }
 
                     newRow.innerHTML = `
-                        <td class="px-6 py-4"><input type="checkbox" class="delete-checkbox" data-doc-id="${docId}" ${isChecked ? 'checked' : ''}></td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${statusHtml}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">${schedule.owfId}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${schedule.employeeName}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">${schedule.agencyName}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500" data-field="date">${schedule.date}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500" data-field="schedule">${schedule.schedule}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-slate-500">${schedule.totalHours.toFixed(1)}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500" data-field="zone">${schedule.zone}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500" data-field="site">${schedule.site}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500" data-field="actions">
-                            <button class="edit-btn text-sky-600 hover:text-sky-800 font-medium" data-doc-id="${docId}">Edit</button>
+                        <td class="px-4 py-2"><input type="checkbox" class="delete-checkbox bg-slate-700 border-slate-600" data-doc-id="${docId}" ${isChecked ? 'checked' : ''}></td>
+                        <td class="px-4 py-2 whitespace-nowrap text-xs text-slate-400">${statusHtml}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-xs font-medium text-slate-200">${schedule.owfId}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-xs text-slate-400">${schedule.employeeName}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-xs text-slate-400">${schedule.agencyName}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-xs text-slate-400" data-field="date">${schedule.date}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-xs text-slate-400" data-field="schedule">${schedule.schedule}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-xs text-center text-slate-400">${schedule.totalHours.toFixed(1)}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-xs text-slate-400" data-field="zone">${schedule.zone}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-xs text-slate-400" data-field="site">${schedule.site}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-xs text-slate-400" data-field="classification">${schedule.classification || 'REG'}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-xs text-slate-400" data-field="actions">
+                            <button class="edit-btn text-pink-400 hover:text-pink-300 font-medium" data-doc-id="${docId}">Edit</button>
                         </td>
                     `;
                 });
@@ -752,7 +769,8 @@
                         employeeName: columns[2] || '', 
                         agencyName: columns[3] || '', 
                         zone: columns[4] || '', 
-                        site: columns[5] || '' 
+                        site: columns[5] || '',
+                        classification: 'REG'
                     };
                     const scheduleData = { 
                         transactionDateFrom: columns[6] || '', 
@@ -768,10 +786,14 @@
 
                         if (!existingSchedule) {
                             schedule.status = 'New Schedule';
+                        } else if (schedule.schedule.toUpperCase() === 'RESTDAY' && existingSchedule.schedule.toUpperCase() !== 'RESTDAY') {
+                            schedule.status = 'New Restday';
+                            schedule.classification = 'RES';
                         } else if (existingSchedule.schedule !== schedule.schedule) {
                             schedule.status = 'Change Schedule';
                         } else {
                             schedule.status = existingSchedule.status || '';
+                            schedule.classification = existingSchedule.classification || 'REG';
                         }
                         csvDataToSave.push(schedule);
                     });
@@ -788,9 +810,14 @@
 
                     if (indexToOverride !== -1) {
                         const originalSchedule = csvDataToSave[indexToOverride];
+                        if(overrideInfo.schedule.toUpperCase() === 'RESTDAY' && originalSchedule.schedule.toUpperCase() !== 'RESTDAY'){
+                           originalSchedule.status = 'New Restday';
+                           originalSchedule.classification = 'RES';
+                        } else if (originalSchedule.schedule !== overrideInfo.schedule) {
+                           originalSchedule.status = 'Change Schedule';
+                        }
                         originalSchedule.schedule = overrideInfo.schedule;
                         originalSchedule.totalHours = calculateWorkHours(overrideInfo.schedule);
-                        originalSchedule.status = 'Change Schedule';
                     }
                 });
 
@@ -831,6 +858,7 @@
                     agencyName: document.getElementById('agencyName').value,
                     zone: document.getElementById('zone').value,
                     site: document.getElementById('site').value,
+                    classification: document.getElementById('classification').value || 'REG',
                 };
                 
                 const overrides = {};
@@ -901,7 +929,16 @@
                     }
                     
                     const totalHours = calculateWorkHours(scheduleToDisplay);
-                    const newSchedule = { ...employeeInfo, date: currentDateString, schedule: scheduleToDisplay, totalHours, status: 'New Schedule' };
+                    const isRestDay = scheduleToDisplay.toUpperCase() === 'RESTDAY' || scheduleToDisplay.toUpperCase() === 'VACATION LEAVE';
+                    
+                    const newSchedule = { 
+                        ...employeeInfo, 
+                        date: currentDateString, 
+                        schedule: scheduleToDisplay, 
+                        totalHours, 
+                        status: 'New Schedule',
+                        classification: isRestDay ? 'RES' : employeeInfo.classification
+                    };
                     generated.push(newSchedule);
                 }
                 return generated;
@@ -937,8 +974,8 @@
             addScheduleBtn.addEventListener('click', () => {
                 scheduleBlockCount++;
                 const newBlock = document.createElement('div');
-                newBlock.className = 'schedule-block mt-6 pt-6 border-t border-slate-200';
-                newBlock.innerHTML = `<div class="flex justify-between items-center mb-4"><h3 class="text-lg font-semibold text-slate-700">Schedule ${scheduleBlockCount}</h3><button type="button" class="remove-schedule-btn text-sm font-medium text-red-600 hover:text-red-800">&times; Remove</button></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div><label class="block text-sm font-medium text-slate-700">Date From</label><input type="date" name="transactionDateFrom" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" required></div><div><label class="block text-sm font-medium text-slate-700">Date To</label><input type="date" name="transactionDateTo" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" required></div><div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700">Work Schedule</label><input type="text" name="workSchedule" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" placeholder="e.g., 9am-6pm" required></div><div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700">Rest Day</label><select name="restDay" class="mt-1 block w-full px-3 py-2 border border-slate-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"><option value="">Select a Day</option><option value="Sunday">Sunday</option><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option><option value="Unknown">Unknown</option></select></div></div>`;
+                newBlock.className = 'schedule-block mt-6 pt-6 border-t border-slate-700';
+                newBlock.innerHTML = `<div class="flex justify-between items-center mb-4"><h3 class="text-base font-semibold text-slate-200">Schedule ${scheduleBlockCount}</h3><button type="button" class="remove-schedule-btn text-xs font-medium text-red-400 hover:text-red-300">&times; Remove</button></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-slate-400">Date From</label><input type="date" name="transactionDateFrom" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm" required></div><div><label class="block text-xs font-medium text-slate-400">Date To</label><input type="date" name="transactionDateTo" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm" required></div><div class="md:col-span-2"><label class="block text-xs font-medium text-slate-400">Work Schedule</label><input type="text" name="workSchedule" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm" placeholder="e.g., 9am-6pm" required></div><div class="md:col-span-2"><label class="block text-xs font-medium text-slate-400">Rest Day</label><select name="restDay" class="mt-1 block w-full px-3 py-1.5 bg-slate-700 border border-slate-600 text-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 text-sm"><option value="">Select a Day</option><option value="Sunday">Sunday</option><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option><option value="Unknown">Unknown</option></select></div></div>`;
                 scheduleBlocksContainer.appendChild(newBlock);
             });
             scheduleBlocksContainer.addEventListener('click', (e) => { if (e.target.classList.contains('remove-schedule-btn')) e.target.closest('.schedule-block').remove(); });
@@ -967,7 +1004,7 @@
                 renderTablePage();
             });
             
-            [filterOwfId, filterName, filterSchedule, filterDateFrom, filterDateTo, filterAgency, filterZone, filterSite, filterStatus].forEach(el => {
+            [filterOwfId, filterName, filterSchedule, filterDateFrom, filterDateTo, filterAgency, filterZone, filterSite, filterStatus, filterClassification].forEach(el => {
                 el.addEventListener('input', () => {
                     currentPage = 1;
                     applyFiltersAndRender();
@@ -984,6 +1021,7 @@
                 filterZone.value = '';
                 filterSite.value = '';
                 filterStatus.value = '';
+                filterClassification.value = '';
                 currentPage = 1;
                 applyFiltersAndRender();
             });
@@ -1104,14 +1142,15 @@
                 });
 
                 // Create inputs
-                row.querySelector('td[data-field="date"]').innerHTML = `<input type="date" class="w-full p-1 border rounded-md" value="${row.dataset.originaldate}">`;
-                row.querySelector('td[data-field="schedule"]').innerHTML = `<input type="text" class="w-full p-1 border rounded-md" value="${row.dataset.originalschedule}">`;
-                row.querySelector('td[data-field="zone"]').innerHTML = `<input type="text" class="w-full p-1 border rounded-md" value="${row.dataset.originalzone}">`;
-                row.querySelector('td[data-field="site"]').innerHTML = `<input type="text" class="w-full p-1 border rounded-md" value="${row.dataset.originalsite}">`;
+                row.querySelector('td[data-field="date"]').innerHTML = `<input type="date" class="w-full p-1 bg-slate-600 border border-slate-500 rounded-md" value="${row.dataset.originaldate}">`;
+                row.querySelector('td[data-field="schedule"]').innerHTML = `<input type="text" class="w-full p-1 bg-slate-600 border border-slate-500 rounded-md" value="${row.dataset.originalschedule}">`;
+                row.querySelector('td[data-field="zone"]').innerHTML = `<input type="text" class="w-full p-1 bg-slate-600 border border-slate-500 rounded-md" value="${row.dataset.originalzone}">`;
+                row.querySelector('td[data-field="site"]').innerHTML = `<input type="text" class="w-full p-1 bg-slate-600 border border-slate-500 rounded-md" value="${row.dataset.originalsite}">`;
+                row.querySelector('td[data-field="classification"]').innerHTML = `<input type="text" class="w-full p-1 bg-slate-600 border border-slate-500 rounded-md" value="${row.dataset.originalclassification}">`;
 
                 row.querySelector('td[data-field="actions"]').innerHTML = `
-                    <button class="save-btn text-green-600 hover:text-green-800 font-medium mr-2" data-doc-id="${docId}">Save</button>
-                    <button class="cancel-btn text-red-600 hover:text-red-800 font-medium" data-doc-id="${docId}">Cancel</button>
+                    <button class="save-btn text-green-400 hover:text-green-300 font-medium mr-2" data-doc-id="${docId}">Save</button>
+                    <button class="cancel-btn text-red-400 hover:text-red-300 font-medium" data-doc-id="${docId}">Cancel</button>
                 `;
             }
 
@@ -1126,7 +1165,7 @@
                 });
                 
                 row.querySelector('td[data-field="actions"]').innerHTML = `
-                    <button class="edit-btn text-sky-600 hover:text-sky-800 font-medium" data-doc-id="${docId}">Edit</button>
+                    <button class="edit-btn text-pink-400 hover:text-pink-300 font-medium" data-doc-id="${docId}">Edit</button>
                 `;
             }
 
@@ -1148,8 +1187,15 @@
                 updatedSchedule.schedule = convertToMilitaryTime(row.querySelector('td[data-field="schedule"] input').value);
                 updatedSchedule.zone = row.querySelector('td[data-field="zone"] input').value;
                 updatedSchedule.site = row.querySelector('td[data-field="site"] input').value;
+                updatedSchedule.classification = row.querySelector('td[data-field="classification"] input').value;
                 updatedSchedule.totalHours = calculateWorkHours(updatedSchedule.schedule);
-                updatedSchedule.status = 'Edited';
+                
+                if (updatedSchedule.schedule.toUpperCase() === 'RESTDAY' && originalSchedule.schedule.toUpperCase() !== 'RESTDAY') {
+                    updatedSchedule.status = 'New Restday';
+                    updatedSchedule.classification = 'RES';
+                } else {
+                    updatedSchedule.status = 'Edited';
+                }
 
                 const newDocId = `${updatedSchedule.owfId}_${updatedSchedule.date}`;
                 showStatusMessage("Saving changes...", "info");
@@ -1340,8 +1386,8 @@
                 const csv = Papa.unparse(finalPlottingData);
                 const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
                 const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'Completed_Schedule.csv';
+                link.setAttribute("href", URL.createObjectURL(blob));
+                link.setAttribute("download", 'Completed_Schedule.csv');
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
