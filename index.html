@@ -251,6 +251,7 @@
                         <button id="clear-status-btn" class="hidden flex items-center gap-2 py-1.5 px-3 border border-transparent rounded-lg shadow-sm text-xs font-medium text-slate-800 bg-yellow-400 hover:bg-yellow-500">Clear Status</button>
                         <button id="delete-selected-btn" class="hidden flex items-center gap-2 py-1.5 px-3 border border-transparent rounded-lg shadow-sm text-xs font-medium text-white bg-red-600 hover:bg-red-700">Delete Selected</button>
                         <button id="save-csv-data-btn" class="hidden flex items-center gap-2 py-1.5 px-3 border border-transparent rounded-lg shadow-sm text-xs font-medium text-white bg-blue-600 hover:bg-blue-700">Save CSV Data</button>
+                        <button id="export-all-csv-btn" class="hidden flex items-center gap-2 py-1.5 px-3 border border-transparent rounded-lg shadow-sm text-xs font-medium text-white bg-orange-600 hover:bg-orange-700">Export All CSV</button>
                         <button id="plotting-btn" class="flex items-center gap-2 py-1.5 px-3 border border-transparent rounded-lg shadow-sm text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700">Plotting</button>
                         <button id="export-button" class="flex items-center gap-2 py-1.5 px-3 border border-transparent rounded-lg shadow-sm text-xs font-medium text-white bg-cyan-600 hover:bg-cyan-700">Export View</button>
                         <button id="clear-button" class="flex items-center gap-2 py-1.5 px-3 border border-slate-600 rounded-lg shadow-sm text-xs font-medium text-slate-300 bg-slate-700 hover:bg-slate-600">Clear View</button>
@@ -454,7 +455,7 @@
         let finalPlottingData = [];
 
         // --- DOM ELEMENTS ---
-        let loginSection, appContent, connectionStatus, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDateFrom, filterDateTo, filterSchedule, filterZone, filterSite, filterStatus, filterClassification, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, authStatus, signoutBtn, userInfo, outputTableBody, plottingBtn, plottingModal, closePlottingModal, addVacationLeaveBtn, vacationLeaveContainer, vacationLeaveTemplate, clearPlottingViewBtn, approveSelectedBtn, clearStatusBtn;
+        let loginSection, appContent, connectionStatus, uploadCsvBtn, submitBtn, saveCsvDataBtn, tableTitle, prevPageBtn, nextPageBtn, pageInfo, itemsPerPageSelect, deleteSelectedBtn, selectAllCheckbox, filterOwfId, filterName, filterAgency, filterDateFrom, filterDateTo, filterSchedule, filterZone, filterSite, filterStatus, filterClassification, clearFilterBtn, topScrollbarContainer, topScrollbarDummy, bottomScrollbarContainer, emailInput, passwordInput, signinBtn, authStatus, signoutBtn, userInfo, outputTableBody, plottingBtn, plottingModal, closePlottingModal, addVacationLeaveBtn, vacationLeaveContainer, vacationLeaveTemplate, clearPlottingViewBtn, approveSelectedBtn, clearStatusBtn, exportAllCsvBtn;
         let isScrolling = false;
 
         function initializeDOMElements() {
@@ -501,6 +502,7 @@
             clearPlottingViewBtn = document.getElementById('clearPlottingViewBtn');
             approveSelectedBtn = document.getElementById('approve-selected-btn');
             clearStatusBtn = document.getElementById('clear-status-btn');
+            exportAllCsvBtn = document.getElementById('export-all-csv-btn');
         }
 
         // --- MAIN INITIALIZATION FUNCTION ---
@@ -585,7 +587,7 @@
             const sites = [...new Set(schedules.map(s => s.site))];
 
             populateDatalist(document.getElementById('agency-list'), agencies);
-            populateDatalist(document.getElementById('zone-list'), zones);
+            populateDatalist(document.getElementById('zone-list'), sites);
             populateDatalist(document.getElementById('site-list'), sites);
         }
 
@@ -818,12 +820,31 @@
                         }
                         originalSchedule.schedule = overrideInfo.schedule;
                         originalSchedule.totalHours = calculateWorkHours(overrideInfo.schedule);
+                    } else {
+                        // If override doesn't match a main schedule, add it as a new one
+                        const employeeInfo = { 
+                            owfId: columns[1] || '', 
+                            employeeName: columns[2] || '', 
+                            agencyName: columns[3] || '', 
+                            zone: columns[4] || '', 
+                            site: columns[5] || '',
+                            classification: 'REG'
+                        };
+                         const newSchedule = {
+                            ...employeeInfo,
+                            date: overrideInfo.date,
+                            schedule: overrideInfo.schedule,
+                            totalHours: calculateWorkHours(overrideInfo.schedule),
+                            status: 'New Schedule'
+                         };
+                         csvDataToSave.push(newSchedule);
                     }
                 });
 
                 applyFiltersAndRender();
                 tableTitle.textContent = `CSV Preview (${csvDataToSave.length} rows)`;
                 saveCsvDataBtn.classList.remove('hidden');
+                exportAllCsvBtn.classList.remove('hidden');
                 showStatusMessage('CSV data is now in preview. Click "Save CSV Data" to commit to the database.', 'info', true);
             }
 
@@ -839,6 +860,7 @@
                     showStatusMessage(`Successfully saved ${csvDataToSave.length} schedule entries from CSV.`, 'success', true);
                     csvDataToSave = [];
                     saveCsvDataBtn.classList.add('hidden');
+                    exportAllCsvBtn.classList.add('hidden');
                     tableTitle.textContent = "Schedules from Database";
                 } catch (error) {
                     console.error("Error saving CSV data to Firestore:", error);
@@ -947,11 +969,25 @@
             clearButton.addEventListener('click', () => {
                 csvDataToSave = [];
                 saveCsvDataBtn.classList.add('hidden');
+                exportAllCsvBtn.classList.add('hidden');
                 tableTitle.textContent = "Schedules from Database";
                 currentPage = 1;
                 applyFiltersAndRender();
                 showStatusMessage('Table view cleared.', 'info');
             });
+
+            function exportAllCsvData() {
+                if (csvDataToSave.length === 0) {
+                    showStatusMessage('No CSV data to export.', 'error');
+                    return;
+                }
+                const headers = ["Status", "OWF ID", "Name", "Agency", "Date", "Schedule", "Total Hours", "Zone", "Site", "Classification"];
+                const rows = csvDataToSave.map(s => [s.status || '', s.owfId, s.employeeName, s.agencyName, s.date, s.schedule, s.totalHours.toFixed(1), s.zone, s.site, s.classification || 'REG']);
+                const csv = Papa.unparse([headers, ...rows]);
+                downloadCSV(csv, 'all_schedules_preview.csv');
+            }
+
+            exportAllCsvBtn.addEventListener('click', exportAllCsvData);
 
             exportButton.addEventListener('click', () => {
                 const table = document.querySelector('table');
